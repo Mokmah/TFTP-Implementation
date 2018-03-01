@@ -1,6 +1,6 @@
 ﻿namespace TFTP_Server
 {
-    partial class Form1
+    partial class frmServer
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(366, 310);
+            this.ClientSize = new System.Drawing.Size(411, 377);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
