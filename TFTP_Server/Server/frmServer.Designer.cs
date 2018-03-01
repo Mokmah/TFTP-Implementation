@@ -41,6 +41,7 @@
             this.btnDemarrer.TabIndex = 0;
             this.btnDemarrer.Text = "Démarrer";
             this.btnDemarrer.UseVisualStyleBackColor = true;
+            this.btnDemarrer.Click += new System.EventHandler(this.btnDemarrer_Click);
             // 
             // btnArreter
             // 
@@ -50,6 +51,7 @@
             this.btnArreter.TabIndex = 1;
             this.btnArreter.Text = "Arrêter";
             this.btnArreter.UseVisualStyleBackColor = true;
+            this.btnArreter.Click += new System.EventHandler(this.btnArreter_Click);
             // 
             // textBox1
             // 
