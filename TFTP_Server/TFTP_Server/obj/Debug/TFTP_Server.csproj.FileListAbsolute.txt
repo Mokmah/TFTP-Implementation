@@ -1,4 +1,0 @@
-E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\TFTP_Server\obj\Debug\TFTP_Server.frmServer.resources
-E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\TFTP_Server\obj\Debug\TFTP_Server.Properties.Resources.resources
-E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\TFTP_Server\obj\Debug\TFTP_Server.csproj.GenerateResource.Cache
-E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\TFTP_Server\obj\Debug\TFTP_Server.csproj.CoreCompileInputs.cache
