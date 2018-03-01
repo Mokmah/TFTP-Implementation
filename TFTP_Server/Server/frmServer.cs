@@ -17,21 +17,32 @@ namespace Server
     {
         // Définition des variables membres
         Thread t;
-        
+        ListenServer server;
 
         public frmServer()
         {
             InitializeComponent();
+            server = new ListenServer(); // Instanciation du serveur
         }
 
         private void btnDemarrer_Click(object sender, EventArgs e)
         {
+            //Désactiver le bouton démarrer
+            btnDemarrer.Enabled = false;
 
+            //Instancier l'objet t pour démarrer le thread «ListenThread» de la classe ListenServer
+            t = new Thread(new ThreadStart(server.ListenThread));
+
+            //Démarrer la thread
+            t.Start();
         }
 
         private void btnArreter_Click(object sender, EventArgs e)
         {
-
+            // Terminer le thread
+            server.m_fin = true;
+            //Fermer l'application
+            Application.Exit();
         }
     }
 }
