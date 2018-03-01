@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{75F541AE-1866-4066-8EC0-2195049913A5}</ProjectGuid>
+    <ProjectGuid>{94C3EBA3-E40D-4842-87CC-BBF87D05789D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TFTP_Server</RootNamespace>
-    <AssemblyName>TFTP_Server</AssemblyName>
+    <RootNamespace>Server</RootNamespace>
+    <AssemblyName>Server</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmTFTPServer.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmTFTPServer.Designer.cs">
-      <DependentUpon>frmTFTPServer.cs</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

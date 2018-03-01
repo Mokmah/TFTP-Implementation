@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TFTP_Server
+namespace Server
 {
-    public partial class frmServer : Form
+    public partial class Form1 : Form
     {
-        public frmServer()
+        public Form1()
         {
             InitializeComponent();
         }
