@@ -1,0 +1,10 @@
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.exe.config
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.exe
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.pdb
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.frmServer.resources
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.Properties.Resources.resources
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csproj.GenerateResource.Cache
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.exe
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.pdb
