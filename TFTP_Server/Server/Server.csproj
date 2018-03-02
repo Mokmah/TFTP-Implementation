@@ -51,6 +51,7 @@
     <Compile Include="frmServer.Designer.cs">
       <DependentUpon>frmServer.cs</DependentUpon>
     </Compile>
+    <Compile Include="TFTP\ErrorMessage.cs" />
     <Compile Include="TFTP\ListenServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
