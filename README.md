@@ -1,4 +1,4 @@
-﻿# TFTP Server
+﻿# Serveur de transfert de fichiers (TFTP)
 
 Laboratoire 6 du cours de Réseau et Linux (Réseau)
 
