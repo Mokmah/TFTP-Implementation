@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Server.TFTP
 {
     // Messages d'erreurs TFTP, voir page 68
-    enum ErrorMessage
+    enum ErrorCode
     {
         NON_DEFINI,
         FICHIER_NON_TROUVE,
