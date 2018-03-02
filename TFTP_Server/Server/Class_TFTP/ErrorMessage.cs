@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server.TFTP
 {
-    // Messages d'erreurs tftp, voir page 68
+    // Messages d'erreurs TFTP, voir page 68
     enum ErrorMessage
     {
         NON_DEFINI,
