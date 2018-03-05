@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.TFTP
+namespace Server.C_TFTP
 {
     // Messages d'erreurs TFTP, voir page 68
     enum ErrorCode
