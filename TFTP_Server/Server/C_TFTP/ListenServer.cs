@@ -45,16 +45,19 @@ namespace Server.C_TFTP
                         {
                             case 1: // Read request
                                 fileName = null;
+                                // Savoir le fichier a transporter
                                 for (int i = 2; bReception[i] != (byte)0; i++)
                                 {
                                     fileName += (char)bReception[i];
                                 }
                                 indice++;
+                                // Savoir le mode de transmission du fichier
                                 while(bReception[indice] != (byte)0)
                                 {
                                     mode += (char)bReception[indice];
                                     indice++;
                                 }
+                                // Instanciation de la classe RRQ
                                 RRQ rrQ = new RRQ();
                                 rrQ.SetFichier(fileName);
                                 rrQ.SetPointDistant(LocalPoint);
