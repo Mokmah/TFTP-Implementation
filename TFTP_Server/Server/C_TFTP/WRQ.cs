@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.TFTP
+namespace Server.C_TFTP
 {
-    class WRQ
+    class WRQ : ErrorType
     {
     }
 }

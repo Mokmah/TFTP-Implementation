@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
-namespace Server
+namespace Server.C_TFTP
 {
-    class ListenServer
+    class ListenServer : ErrorType
     {
         // Variable de fin de la thread
         public bool m_fin;
@@ -18,12 +19,13 @@ namespace Server
         public void ListenThread()
         {
             // Création de la chainequi va renfermer le nom du fichier a remplir
-            string fileName;
+            string fileName, mode = null;
             // Création du point local et du point distant
             EndPoint LocalPoint = new IPEndPoint(0, 69);
             EndPoint DistantPoint = new IPEndPoint(0, 0);
             // Création du tableau de byte qui va renfermer la réception
             byte[] bReception = new byte[516];
+            int indice = 0;
 
             // Écoute du serveur
             try
@@ -47,7 +49,22 @@ namespace Server
                                 {
                                     fileName += (char)bReception[i];
                                 }
-                                break; // La methode n'est pas complete
+                                indice++;
+                                while(bReception[indice] != (byte)0)
+                                {
+                                    mode += (char)bReception[indice];
+                                    indice++;
+                                }
+                                RRQ rrQ = new RRQ();
+                                rrQ.SetFichier(fileName);
+                                rrQ.SetPointDistant(LocalPoint);
+                                Thread threadRRQ = new Thread(new ThreadStart(rrQ.RRQThread));
+                                threadRRQ.Start();
+                                break;
+                            case 2: // Write Request
+                                break;
+                            case -1: // Ni RRQ, ni WRQ donc erreur
+                                break;
                         }
                     }
                 }

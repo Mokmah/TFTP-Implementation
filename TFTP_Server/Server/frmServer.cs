@@ -17,12 +17,12 @@ namespace Server
     {
         // Définition des variables membres
         Thread t;
-        ListenServer server;
+        C_TFTP.ListenServer server;
 
         public frmServer()
         {
             InitializeComponent();
-            server = new ListenServer(); // Instanciation du serveur
+            server = new C_TFTP.ListenServer(); // Instanciation du serveur
         }
 
         private void btnDemarrer_Click(object sender, EventArgs e)
