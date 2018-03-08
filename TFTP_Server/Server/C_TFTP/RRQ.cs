@@ -29,10 +29,10 @@ namespace Server.C_TFTP
             bool bRead;
             byte[] Reception = new byte[516];
             int nRead = 0, nTimeOut = 0, nAckError = 0, nBlock = 0;
-            if (File.Exists(fileRRQ))
+            if (File.Exists("C:\\TFTP\\" + fileRRQ))
             {
                 // Ouverture du fichier avec un filestream
-                fs = File.Open(fileRRQ, FileMode.Open, FileAccess.Read, FileShare.Read);
+                fs = File.Open("C:\\TFTP\\"  + fileRRQ, FileMode.Open, FileAccess.Read, FileShare.Read);
                 do
                 {
                     nRead = fs.Read(tTrame, 4, 512);
@@ -47,7 +47,6 @@ namespace Server.C_TFTP
                         if (!(bRead = sRRQ.Poll(5000000, SelectMode.SelectRead)))
                         {
                             nTimeOut++;
-                            sRRQ.SendTo(tTrame, 4 + nRead, SocketFlags.None, PointDistantRRQ);
                         }
                         else
                         {

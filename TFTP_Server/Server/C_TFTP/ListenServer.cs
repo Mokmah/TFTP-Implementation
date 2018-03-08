@@ -41,18 +41,19 @@ namespace Server.C_TFTP
                     if (socket.Available > 0)
                     {
                         socket.ReceiveFrom(bReception, ref DistantPoint);
+
                         switch (TrameValidation(bReception))
                         {
                             case 1: // Read request
                                 fileName = null;
                                 // Savoir le fichier a transporter
-                                for (int i = 2; bReception[i] != (byte)0; i++)
+                                for (int i = 2; bReception[i] != 0; i++)
                                 {
                                     fileName += (char)bReception[i];
                                 }
                                 indice++;
                                 // Savoir le mode de transmission du fichier
-                                while(bReception[indice] != (byte)0)
+                                while(bReception[indice] != 0)
                                 {
                                     mode += (char)bReception[indice];
                                     indice++;
@@ -60,7 +61,7 @@ namespace Server.C_TFTP
                                 // Instanciation de la classe RRQ
                                 RRQ rrQ = new RRQ();
                                 rrQ.SetFichier(fileName);
-                                rrQ.SetPointDistant(LocalPoint);
+                                rrQ.SetPointDistant(DistantPoint);
                                 Thread threadRRQ = new Thread(new ThreadStart(rrQ.RRQThread));
                                 threadRRQ.Start();
                                 break;
@@ -87,6 +88,14 @@ namespace Server.C_TFTP
             {
                 return 1;
             }
+            else
+            {
+                if (bTrame[0] == 0 && bTrame[1] == 2)
+                {
+                    return 2;
+                }
+            }
+
             return 0;
         }
     }
