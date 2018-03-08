@@ -30,7 +30,6 @@
         {
             this.btnDemarrer = new System.Windows.Forms.Button();
             this.btnArreter = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnDemarrer
@@ -53,26 +52,16 @@
             this.btnArreter.UseVisualStyleBackColor = true;
             this.btnArreter.Click += new System.EventHandler(this.btnArreter_Click);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(13, 88);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(430, 256);
-            this.textBox1.TabIndex = 2;
-            // 
             // frmServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(455, 356);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(457, 104);
             this.Controls.Add(this.btnArreter);
             this.Controls.Add(this.btnDemarrer);
             this.Name = "frmServer";
             this.Text = "Serveur TFTP";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -80,7 +69,6 @@
 
         private System.Windows.Forms.Button btnDemarrer;
         private System.Windows.Forms.Button btnArreter;
-        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

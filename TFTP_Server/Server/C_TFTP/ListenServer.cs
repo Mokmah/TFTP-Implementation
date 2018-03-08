@@ -19,7 +19,7 @@ namespace Server.C_TFTP
             EndPoint LocalPoint = new IPEndPoint(0, 69);
             EndPoint DistantPoint = new IPEndPoint(0, 0);
             // Création du tableau de byte qui va renfermer la réception
-            byte[] bReception = new byte[516];
+            byte[] bTamponReception = new byte[516];
             int indice = 0;
 
             // Écoute du serveur
@@ -35,23 +35,23 @@ namespace Server.C_TFTP
                 {
                     if (socket.Available > 0)
                     {
-                        socket.ReceiveFrom(bReception, ref DistantPoint);
+                        socket.ReceiveFrom(bTamponReception, ref DistantPoint);
 
-                        switch (TrameValidation(bReception))
+                        switch (TrameValidation(bTamponReception))
                         {
                             case 1: // Read request
                                 fileName = null;
                                 // Savoir le fichier a transporter
-                                for (int i = 2; bReception[i] != 0; i++)
+                                for (int i = 2; bTamponReception[i] != 0; i++)
                                 {
-                                    fileName += (char)bReception[i];
+                                    fileName += (char)bTamponReception[i];
                                 }
                                 indice++;
 
                                 // Savoir le mode de transmission du fichier
-                                while(bReception[indice] != 0)
+                                while(bTamponReception[indice] != 0)
                                 {
-                                    mode += (char)bReception[indice];
+                                    mode += (char)bTamponReception[indice];
                                     indice++;
                                 }
 
@@ -66,9 +66,26 @@ namespace Server.C_TFTP
 
                             case 2: // Write Request
                                 fileName = null;
+                                // Savoir le fichier à transporter
+                                for (int i = 2; bTamponReception[i] != 0; i++)
+                                {
+                                    fileName += (char)bTamponReception[i];
+                                }
+                                indice++;
 
+                                // Savoir le mode de transmission du fichier
+                                while(bTamponReception[indice] !=0)
+                                {
+                                    mode += (char)bTamponReception[indice];
+                                    indice++;
+                                }
+                                WRQ wrQ = new WRQ();
+                                wrQ.SetFichier(fileName);
+                                wrQ.SetPointDistant(DistantPoint);
+                                Thread threadWRQ = new Thread(new ThreadStart(wrQ.WRQThread));
+                                threadWRQ.Start();
                                 break;
-                            case -1: // Ni RRQ, ni WRQ donc erreur
+                            case 0: // Ni RRQ, ni WRQ donc erreur
                                 break;
                         }
                     }

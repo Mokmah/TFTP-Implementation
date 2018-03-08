@@ -16,3 +16,4 @@ F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Serv
 F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.exe.config
 F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.exe
 F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.pdb
+E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
