@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -52,20 +47,26 @@ namespace Server.C_TFTP
                                     fileName += (char)bReception[i];
                                 }
                                 indice++;
+
                                 // Savoir le mode de transmission du fichier
                                 while(bReception[indice] != 0)
                                 {
                                     mode += (char)bReception[indice];
                                     indice++;
                                 }
+
                                 // Instanciation de la classe RRQ
                                 RRQ rrQ = new RRQ();
                                 rrQ.SetFichier(fileName);
                                 rrQ.SetPointDistant(DistantPoint);
                                 Thread threadRRQ = new Thread(new ThreadStart(rrQ.RRQThread));
                                 threadRRQ.Start();
+
                                 break;
+
                             case 2: // Write Request
+                                fileName = null;
+
                                 break;
                             case -1: // Ni RRQ, ni WRQ donc erreur
                                 break;
