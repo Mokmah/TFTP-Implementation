@@ -19,31 +19,31 @@ namespace Server.C_TFTP
 
         public void SetFichier(string fileName)
         {
-            fileRRQ = fileName;
+            fileRRQ = "C:\\TFTP\\" + fileName;
         }
 
         public void RRQThread()
         {
             // Description des variables du thread
-            byte[] tTrame = new byte[516];
+            byte[] bTrame = new byte[516];
             bool bRead;
-            byte[] Reception = new byte[516];
+            byte[] bTamponReception = new byte[516];
             int nRead = 0, nTimeOut = 0, nAckError = 0, nBlock = 0;
-            if (File.Exists("C:\\TFTP\\" + fileRRQ))
+            if (File.Exists(fileRRQ))
             {
                 // Ouverture du fichier avec un filestream
-                fs = File.Open("C:\\TFTP\\"  + fileRRQ, FileMode.Open, FileAccess.Read, FileShare.Read);
+                fs = File.Open(fileRRQ, FileMode.Open, FileAccess.Read, FileShare.Read);
                 do
                 {
-                    nRead = fs.Read(tTrame, 4, 512);
+                    nRead = fs.Read(bTrame, 4, 512);
                     nBlock++;
-                    tTrame[0] = 0;
-                    tTrame[1] = 3;
-                    tTrame[2] = (byte)(nBlock >> 8);
-                    tTrame[3] = (byte)(nBlock % 256);
+                    bTrame[0] = 0;
+                    bTrame[1] = 3;
+                    bTrame[2] = (byte)(nBlock >> 8);
+                    bTrame[3] = (byte)(nBlock % 256);
                     do
                     {
-                        sRRQ.SendTo(tTrame, 4 + nRead, SocketFlags.None, PointDistantRRQ);
+                        sRRQ.SendTo(bTrame, 4 + nRead, SocketFlags.None, PointDistantRRQ);
                         if (!(bRead = sRRQ.Poll(5000000, SelectMode.SelectRead)))
                         {
                             nTimeOut++;
@@ -51,17 +51,17 @@ namespace Server.C_TFTP
                         else
                         {
                             nTimeOut = 0;
-                            sRRQ.ReceiveFrom(Reception, ref PointDistantRRQ);
+                            sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
                             // Verification dans une erreur de transfert de bloc
-                            if (!(Reception[0] == 0 && Reception[1] == 4))
+                            if (!(bTamponReception[0] == 0 && bTamponReception[1] == 4))
                             {
                                 nAckError++;
                             }
                             else
                             {
                                 nAckError = 0;
-                                nBlock = (((int)Reception[2]) << 8);
-                                nBlock += ((int)Reception[3]);
+                                nBlock = bTamponReception[2] << 8;
+                                nBlock += bTamponReception[3];
                             }
                         }
                     }
