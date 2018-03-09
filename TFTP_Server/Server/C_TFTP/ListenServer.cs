@@ -86,6 +86,8 @@ namespace Server.C_TFTP
                                 threadWRQ.Start();
                                 break;
                             case 0: // Ni RRQ, ni WRQ donc erreur
+                                // Operation TFTP illégale
+                                DetectionTypeErreur(socket, DistantPoint, 4);
                                 break;
                         }
                     }
