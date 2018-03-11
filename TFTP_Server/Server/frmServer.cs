@@ -35,14 +35,26 @@ namespace Server
 
             //Démarrer la thread
             t.Start();
+
+            // Afficher le statut
+            UpdateStatus("Démarrage du serveur TFTP");
         }
 
         private void btnArreter_Click(object sender, EventArgs e)
         {
             // Terminer le thread
             server.m_fin = true;
+
             //Fermer l'application
+            UpdateStatus("Le serveur TFTP est arrêté");
+
+            //Fermeture de l'application
             Application.Exit();
+        }
+
+        public void UpdateStatus(string Status)
+        {
+            txtStatus.Text += Status + "\r\n";
         }
     }
 }
