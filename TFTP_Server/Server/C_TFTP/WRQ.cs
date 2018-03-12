@@ -12,10 +12,15 @@ namespace Server.C_TFTP
 {
     class WRQ : ErrorType
     {
-        // Définition des variables
+        // Définition des variables *****
+        // Socket WRQ
         Socket sWRQ = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+        // Point local et distant
         EndPoint PointDistantWRQ = new IPEndPoint(0, 0);
         EndPoint PointLocalWRQ = new IPEndPoint(0, 69);
+
+        // Fichier WRQ
         string fileWRQ;
         FileStream fs;
 
@@ -32,7 +37,7 @@ namespace Server.C_TFTP
         public void WRQThread()
         {
             // Définition des variables pour le thread
-            byte[] bTrame = new byte[4] { 0, 4, 0, 0 };
+            byte[] bTrame = new byte[4] { 0, 4, 0, 0 }; // Pour envoyer un premier ack et commencer le transfert
             bool bRead;
             byte[] bTamponReception = new byte[516];
             int indice = 0, nRead = 0, nTimeOut = 0, nBlockError = 0, nBlock = 1;
@@ -68,6 +73,7 @@ namespace Server.C_TFTP
                             {
                                 fs.WriteByte(bTamponReception[indice]);
                             }
+                            // Envoi d'un ack
                             bTrame[2] = (byte)(nBlock >> 8);
                             bTrame[3] = (byte)(nBlock % 256);
                             SendAck(bTrame);
