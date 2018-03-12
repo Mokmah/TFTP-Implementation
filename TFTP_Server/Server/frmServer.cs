@@ -18,7 +18,6 @@ namespace Server
         // Définition des variables membres
         Thread t;
         C_TFTP.ListenServer server;
-        BackgroundWorker ServerStatus;
 
         public frmServer()
         {

@@ -14,7 +14,6 @@ namespace Server.C_TFTP
         {
             // Tableaux de bytes renfermant les trames
             byte[] Trame = new byte[512];
-            byte[] Ack = new byte[4] { 0, 4, 0, 0 };
 
             // Instanciation du formulaire pour envoyer le status de l'erreur
             frmServer f = new frmServer();
