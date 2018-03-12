@@ -18,6 +18,7 @@ namespace Server
         // Définition des variables membres
         Thread t;
         C_TFTP.ListenServer server;
+        BackgroundWorker ServerStatus;
 
         public frmServer()
         {
@@ -35,6 +36,8 @@ namespace Server
 
             //Démarrer la thread
             t.Start();
+
+            // Background worker
 
             // Afficher le statut
             UpdateStatus("Démarrage du serveur TFTP");

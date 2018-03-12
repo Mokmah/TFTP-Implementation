@@ -1,7 +1,16 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Windows.Forms;
+
 
 namespace Server.C_TFTP
 {
@@ -15,9 +24,14 @@ namespace Server.C_TFTP
         {
             // Création de la chainequi va renfermer le nom du fichier a remplir
             string fileName, mode = null;
+
+            // Instanciation du formulaire pour envoyer le status
+            frmServer f = new frmServer();
+
             // Création du point local et du point distant
             EndPoint LocalPoint = new IPEndPoint(0, 69);
             EndPoint DistantPoint = new IPEndPoint(0, 0);
+
             // Création du tableau de byte qui va renfermer la réception
             byte[] bTamponReception = new byte[516];
             int indice = 0;
@@ -65,6 +79,7 @@ namespace Server.C_TFTP
                                 break;
 
                             case 2: // Write Request
+                                //f.UpdateStatus("Une demande d'écriture a été créée.");
                                 fileName = null;
                                 // Savoir le fichier à transporter
                                 for (int i = 2; bTamponReception[i] != 0; i++)
@@ -87,6 +102,7 @@ namespace Server.C_TFTP
                                 break;
                             case 0: // Ni RRQ, ni WRQ donc erreur
                                 // Operation TFTP illégale
+                                //f.UpdateStatus("Une demande illégale a été rencontrée.");
                                 DetectionTypeErreur(socket, DistantPoint, 4);
                                 break;
                         }

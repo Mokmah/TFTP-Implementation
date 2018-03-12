@@ -91,7 +91,7 @@
 
         private System.Windows.Forms.Button btnDemarrer;
         private System.Windows.Forms.Button btnArreter;
-        private System.Windows.Forms.TextBox txtStatus;
+        public System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Label lblStatus;
     }
 }

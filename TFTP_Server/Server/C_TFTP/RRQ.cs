@@ -6,6 +6,7 @@ namespace Server.C_TFTP
 {
     class RRQ : ErrorType
     {
+        frmServer f = new frmServer();
         Socket sRRQ = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         EndPoint PointDistantRRQ = new IPEndPoint(0, 0);
         EndPoint PointLocalRRQ = new IPEndPoint(0, 69);

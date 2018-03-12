@@ -32,7 +32,7 @@ namespace Server.C_TFTP
         public void WRQThread()
         {
             // Définition des variables pour le thread
-            byte[] bTrame = new byte[4] { 0, 0, 4, 0 };
+            byte[] bTrame = new byte[4] { 0, 4, 0, 0 };
             bool bRead;
             byte[] bTamponReception = new byte[516];
             int indice = 0, nRead = 0, nTimeOut = 0, nBlockError = 0, nBlock = 1;
@@ -44,6 +44,7 @@ namespace Server.C_TFTP
                 sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);
                 do
                 {
+                    SendAck(bTrame);
                     if (!(bRead = sWRQ.Poll(5000000, SelectMode.SelectRead)))
                     {
                         nTimeOut++;
@@ -54,7 +55,7 @@ namespace Server.C_TFTP
                         nTimeOut = 0;
                         // Recevoir les informations des blocs
                         nRead = sWRQ.ReceiveFrom(bTamponReception, ref PointDistantWRQ);
-                        if (!(bTamponReception[0] == 0 && bTamponReception[1] == 3 && bTamponReception[2] == (byte)nBlock >> 8 && bTamponReception[3] == (byte)(nBlock % 256)))
+                        if (!(bTamponReception[0] == 0 && bTamponReception[1] == 3 && bTamponReception[2] == (byte)(nBlock >> 8) && bTamponReception[3] == (byte)(nBlock % 256)))
                         {
                             nBlockError++;
                             // Verification de nblock requise
@@ -69,12 +70,12 @@ namespace Server.C_TFTP
                             }
                             bTrame[2] = (byte)(nBlock >> 8);
                             bTrame[3] = (byte)(nBlock % 256);
-                            // Envoyer un ack par la suite
+                            SendAck(bTrame);
                             nBlock++;
                         }
                     }
                 }
-                while (nRead == 516 && nTimeOut < 10 && nBlockError < 3);
+                while (bRead && nTimeOut < 10 && nBlockError < 3);
 
                 // Réagir à une erreur dans un transfert de bloc
                 if (nBlockError == 3)
@@ -89,6 +90,7 @@ namespace Server.C_TFTP
                 DetectionTypeErreur(sWRQ, PointDistantWRQ, 6);
             }
         }
+
         // Envoyer un ack au client
         private void SendAck(byte[] bTrame)
         {
