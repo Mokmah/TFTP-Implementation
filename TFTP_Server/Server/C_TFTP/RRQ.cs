@@ -7,6 +7,7 @@ namespace Server.C_TFTP
     class RRQ : ErrorType
     {
         // Définition des variables***
+
         // Chaîne de caractères renfermant le message d'erreur
         string errorMsg;
         // Instantiation du formulaire pour envoyer le statut du serveur

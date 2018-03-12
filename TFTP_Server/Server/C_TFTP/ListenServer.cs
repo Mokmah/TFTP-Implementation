@@ -134,10 +134,5 @@ namespace Server.C_TFTP
 
             return 0;
         }
-
-        public void TransferStatus(string str)
-        {
-            f.Invoke(f.ServerStatus, new object[] { str });
-        }
     }
 }
