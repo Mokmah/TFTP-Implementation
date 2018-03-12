@@ -105,7 +105,7 @@ namespace Server.C_TFTP
                     f.Invoke(f.ServerStatus, new object[] { errorMsg });
                 }
                 fs.Close();
-                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès !" });
+                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès !\r\n" });
             }
             else
             {
