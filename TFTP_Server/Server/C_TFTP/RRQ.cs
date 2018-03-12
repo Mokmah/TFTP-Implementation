@@ -71,6 +71,7 @@ namespace Server.C_TFTP
                         else
                         {
                             nTimeOut = 0;
+                            sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
                             sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
                             // Verification dans une erreur de transfert de bloc
                             if (!(bTamponReception[0] == 0 && bTamponReception[1] == 4))
