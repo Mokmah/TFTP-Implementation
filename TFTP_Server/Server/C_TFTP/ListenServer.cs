@@ -11,14 +11,18 @@ namespace Server.C_TFTP
         // Variable de fin de la thread
         public bool m_fin;
         private Socket socket;
+        frmServer f;
+
+        // On appelle l'objet frmServer pour envoyer un statut
+        public ListenServer(frmServer myForm)
+        {
+            f = myForm;
+        }
 
         public void ListenThread()
         {
             // Création de la chainequi va renfermer le nom du fichier a remplir
             string fileName, mode = null;
-
-            // Instanciation du formulaire pour envoyer le status
-            frmServer f = new frmServer();
 
             // Création du point local et du point distant
             EndPoint LocalPoint = new IPEndPoint(0, 69);
@@ -46,6 +50,8 @@ namespace Server.C_TFTP
                         switch (TrameValidation(bTamponReception))
                         {
                             case 1: // Read request
+                                f.Invoke(f.ServerStatus, new object[] {"Une demande de lecture a été créée"});
+                                Thread.Sleep(50);
                                 fileName = null;
                                 // Savoir le fichier a transporter
                                 for (int i = 2; bTamponReception[i] != 0; i++)
@@ -62,16 +68,17 @@ namespace Server.C_TFTP
                                 }
 
                                 // Instanciation de la classe RRQ
-                                RRQ rrQ = new RRQ();
+                                RRQ rrQ = new RRQ(f);
                                 rrQ.SetFichier(fileName);
                                 rrQ.SetPointDistant(DistantPoint);
+                                f.Invoke(f.ServerStatus, new object[] { string.Format("Transfert du fichier {0} vers {1}", fileName, DistantPoint.ToString()) });
                                 Thread threadRRQ = new Thread(new ThreadStart(rrQ.RRQThread));
                                 threadRRQ.Start();
 
                                 break;
 
                             case 2: // Write Request
-                                //f.UpdateStatus("Une demande d'écriture a été créée.");
+                                f.Invoke(f.ServerStatus, new object[] { "Une demande d'écriture a été créée" });
                                 fileName = null;
                                 // Savoir le fichier à transporter
                                 for (int i = 2; bTamponReception[i] != 0; i++)
@@ -86,15 +93,16 @@ namespace Server.C_TFTP
                                     mode += (char)bTamponReception[indice];
                                     indice++;
                                 }
-                                WRQ wrQ = new WRQ();
+                                WRQ wrQ = new WRQ(f);
                                 wrQ.SetFichier(fileName);
                                 wrQ.SetPointDistant(DistantPoint);
+                                f.Invoke(f.ServerStatus, new object[] { string.Format("Transfert du fichier {0} venant de {1}", fileName, DistantPoint.ToString()) });
                                 Thread threadWRQ = new Thread(new ThreadStart(wrQ.WRQThread));
                                 threadWRQ.Start();
                                 break;
                             case 0: // Ni RRQ, ni WRQ donc erreur
                                 // Operation TFTP illégale
-                                //f.UpdateStatus("Une demande illégale a été rencontrée.");
+                                f.Invoke(f.ServerStatus, new object[] { "Une demande illégale a été rencontrée." });
                                 DetectionTypeErreur(socket, DistantPoint, 4);
                                 break;
                         }
@@ -125,6 +133,11 @@ namespace Server.C_TFTP
             }
 
             return 0;
+        }
+
+        public void TransferStatus(string str)
+        {
+            f.Invoke(f.ServerStatus, new object[] { str });
         }
     }
 }

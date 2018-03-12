@@ -18,11 +18,18 @@ namespace Server
         // Définition des variables membres
         Thread t;
         C_TFTP.ListenServer server;
+        C_TFTP.RRQ rrQ;
+        C_TFTP.WRQ wrQ;
+        public delegate void dSetText(string str);
+        public dSetText ServerStatus;
 
         public frmServer()
         {
             InitializeComponent();
-            server = new C_TFTP.ListenServer(); // Instanciation du serveur
+            server = new C_TFTP.ListenServer(this); // Instanciation du serveur
+            rrQ = new C_TFTP.RRQ(this);
+            wrQ = new C_TFTP.WRQ(this);
+            ServerStatus = new dSetText(UpdateStatus);
         }
 
         private void btnDemarrer_Click(object sender, EventArgs e)
@@ -39,7 +46,7 @@ namespace Server
             // Background worker
 
             // Afficher le statut
-            UpdateStatus("Démarrage du serveur TFTP");
+            UpdateStatus("Démarrage du serveur TFTP\r\n");
         }
 
         private void btnArreter_Click(object sender, EventArgs e)

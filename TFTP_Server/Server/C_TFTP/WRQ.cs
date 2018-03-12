@@ -13,12 +13,24 @@ namespace Server.C_TFTP
     class WRQ : ErrorType
     {
         // Définition des variables *****
+        // Chaîne de caractères renfermant le code d'erreur
+        string errorMsg;
+
         // Socket WRQ
         Socket sWRQ = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
         // Point local et distant
         EndPoint PointDistantWRQ = new IPEndPoint(0, 0);
         EndPoint PointLocalWRQ = new IPEndPoint(0, 69);
+
+        // Instantiation du formulaire pour envoyer le statut du serveur
+        frmServer f;
+
+        // On appelle l'objet frmServer pour envoyer un statut
+        public WRQ(frmServer myForm)
+        {
+            f = myForm;
+        }
 
         // Fichier WRQ
         string fileWRQ;
@@ -47,13 +59,14 @@ namespace Server.C_TFTP
                 fs = File.Open(fileWRQ, FileMode.CreateNew, FileAccess.Write, FileShare.None);
                 // Envoyer un ack pour commencer le transfert
                 sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);
+                f.Invoke(f.ServerStatus, new object[] { "On envoit un premier ACK au client pour faire la demande" });
                 do
                 {
                     SendAck(bTrame);
                     if (!(bRead = sWRQ.Poll(5000000, SelectMode.SelectRead)))
                     {
                         nTimeOut++;
-                        // Envoyer un ack si il n'a pas eu de reponse du client
+                        f.Invoke(f.ServerStatus, new object[] { "Attente du client" });
                     }
                     else
                     {
@@ -63,6 +76,7 @@ namespace Server.C_TFTP
                         if (!(bTamponReception[0] == 0 && bTamponReception[1] == 3 && bTamponReception[2] == (byte)(nBlock >> 8) && bTamponReception[3] == (byte)(nBlock % 256)))
                         {
                             nBlockError++;
+                            f.Invoke(f.ServerStatus, new object[] { "Une erreur de block a été rencontrée."});
                             // Verification de nblock requise
                         }
                         else
@@ -81,19 +95,22 @@ namespace Server.C_TFTP
                         }
                     }
                 }
-                while (bRead && nTimeOut < 10 && nBlockError < 3);
-
+                while (nRead == 516 && nTimeOut < 10 && nBlockError < 3);
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Total de block transférés : {0}, dans le fichier {1}", nBlock, fileWRQ) });
                 // Réagir à une erreur dans un transfert de bloc
                 if (nBlockError == 3)
                 {
                     // Envoi de l'erreur pour lier le bon type avec le code d'erreur
-                    DetectionTypeErreur(sWRQ, PointDistantWRQ, 5);
+                    errorMsg = DetectionTypeErreur(sWRQ, PointDistantWRQ, 5);
+                    f.Invoke(f.ServerStatus, new object[] { errorMsg });
                 }
                 fs.Close();
+                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès !" });
             }
             else
             {
-                DetectionTypeErreur(sWRQ, PointDistantWRQ, 6);
+                errorMsg = DetectionTypeErreur(sWRQ, PointDistantWRQ, 6);
+                f.Invoke(f.ServerStatus, new object[] { errorMsg });
             }
         }
 

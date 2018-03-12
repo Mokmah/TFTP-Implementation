@@ -6,12 +6,29 @@ namespace Server.C_TFTP
 {
     class RRQ : ErrorType
     {
-        frmServer f = new frmServer();
+        // Définition des variables***
+        // Chaîne de caractères renfermant le message d'erreur
+        string errorMsg;
+        // Instantiation du formulaire pour envoyer le statut du serveur
+        frmServer f;
+
+        // On appelle l'objet frmServer pour envoyer un statut
+        public RRQ(frmServer myForm)
+        {
+            f = myForm;
+        }
+
+        // Instantiation du socket RRQ
         Socket sRRQ = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+        //Coordonnées pour le point distant et le point local
         EndPoint PointDistantRRQ = new IPEndPoint(0, 0);
         EndPoint PointLocalRRQ = new IPEndPoint(0, 69);
+
+        //Accès au fichier RRQ
         string fileRRQ;
         FileStream fs;
+
 
         public void SetPointDistant(EndPoint PointDistant)
         {
@@ -48,6 +65,7 @@ namespace Server.C_TFTP
                         if (!(bRead = sRRQ.Poll(5000000, SelectMode.SelectRead)))
                         {
                             nTimeOut++;
+                            f.Invoke(f.ServerStatus, new object[] { "Attente du client" });
                         }
                         else
                         {
@@ -72,13 +90,17 @@ namespace Server.C_TFTP
                 // Detection du type d'erreur
                 if (nAckError == 3)
                 {
-                    DetectionTypeErreur(sRRQ, PointDistantRRQ, 5);
+                    errorMsg = DetectionTypeErreur(sRRQ, PointDistantRRQ, 5);
+                    f.Invoke(f.ServerStatus, new object[] { errorMsg });
                 }
                 fs.Close();
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} envoyés à {1}", nBlock, PointDistantRRQ.ToString()) });
+                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès.\r\n" });
             }
             else // Si le fichier n'existe pas
             {
-                DetectionTypeErreur(sRRQ, PointDistantRRQ, 1);
+                errorMsg = DetectionTypeErreur(sRRQ, PointDistantRRQ, 1);
+                f.Invoke(f.ServerStatus, new object[] { errorMsg });
             }
         }
     }
