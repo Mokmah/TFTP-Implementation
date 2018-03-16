@@ -14,10 +14,13 @@ namespace Server.C_TFTP
 
             // Variables d'incrémentation
             int indice, iMessage = 0;
+
+            // C/ration de la trame d'erreur à envoyer au client
             Trame[0] = 0;
             Trame[1] = 5;
             Trame[2] = 0;
             Trame[3] = (byte)code;
+
             // Choix du message selon le type de problème (voir p 69 dans cahier)
             for (indice = 4; indice < MessageErreur.Length; indice++)
             {
@@ -27,7 +30,7 @@ namespace Server.C_TFTP
             // Envoi du type d'erreur au serveur / client
             Trame[indice] = 0;
             s.SendTo(Trame, pointDistant);
-
+            // Envoyer le statut du serveur au formulaire
             return string.Format("Une erreur a été rencontrée : {0}\r\n", MessageErreur);
         }
     }
