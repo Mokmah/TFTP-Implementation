@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -17,18 +8,26 @@ namespace Server
     {
         // Définition des variables membres
         Thread t;
+
+        // Objets des autres classes pour intéragir avec le formulaire de façon à les faire intéragir ensemble
         C_TFTP.ListenServer server;
         C_TFTP.RRQ rrQ;
         C_TFTP.WRQ wrQ;
+
+        // Méthode déléguée pour envoyer le statut des autres classes au formulaire
         public delegate void dSetText(string str);
         public dSetText ServerStatus;
 
         public frmServer()
         {
             InitializeComponent();
+
+            //Instantiation des autres classes en leur donnant le handle du formulaire en paramètre
             server = new C_TFTP.ListenServer(this); // Instanciation du serveur
             rrQ = new C_TFTP.RRQ(this);
             wrQ = new C_TFTP.WRQ(this);
+
+            // Instantiation de la méthode déléguée en y associant sa méthode cible.
             ServerStatus = new dSetText(UpdateStatus);
         }
 
@@ -63,6 +62,7 @@ namespace Server
 
         public void UpdateStatus(string Status)
         {
+            // Envoi du statut dans le textbox du formulaire
             txtStatus.Text += Status + "\r\n";
         }
     }
