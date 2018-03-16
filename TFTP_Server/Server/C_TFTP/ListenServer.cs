@@ -13,7 +13,7 @@ namespace Server.C_TFTP
         private Socket socket;
         frmServer f;
 
-        // On appelle l'objet frmServer pour envoyer un statut
+        // On appelle l'objet frmServer pour envoyer un statut au formulaire
         public ListenServer(frmServer myForm)
         {
             f = myForm;
