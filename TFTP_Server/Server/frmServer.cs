@@ -46,8 +46,6 @@ namespace Server
             //Démarrer la thread
             t.Start();
 
-            // Background worker
-
             // Afficher le statut
             UpdateStatus("Démarrage du serveur TFTP\r\n");
         }
