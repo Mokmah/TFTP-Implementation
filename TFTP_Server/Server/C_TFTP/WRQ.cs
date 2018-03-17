@@ -28,7 +28,7 @@ namespace Server.C_TFTP
             f = myForm;
         }
 
-        // Fichier WRQ
+        // Variables pour le fichier WRQ
         string fileWRQ;
         FileStream fs;
 
@@ -111,7 +111,7 @@ namespace Server.C_TFTP
             }
         }
 
-        // Envoyer un ack au client
+        // Méthode d'envoi de ACK au client
         private void SendAck(byte[] bTrame)
         {
             sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);

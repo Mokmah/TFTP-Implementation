@@ -21,7 +21,7 @@ namespace Server.C_TFTP
             Trame[2] = 0;
             Trame[3] = (byte)code;
 
-            // Choix du message selon le type de problème (voir p 69 dans cahier)
+            // Choix du message selon le type de problème
             for (indice = 4; indice < MessageErreur.Length; indice++)
             {
                 Trame[indice] = (byte)MessageErreur[iMessage];
