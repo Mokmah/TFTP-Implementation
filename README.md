@@ -12,5 +12,7 @@ Fichiers TFTP : Fichier à envoyer entre le serveur et le client tftp
 
 TFTP_Server : Dossier renfermant la solution du programme de serveur TFTP, ainsi que le programme de client.
 
+C_TFTP : Dossier renfermant les classes nécéssaires pour faire fonctionner le protocole de transfert de fichiers TFTP.
+
 # Présentation visuelle du serveur :
 ![image](https://user-images.githubusercontent.com/33030290/37306931-abdac27e-260f-11e8-8c61-8fc6a21cef5c.png)
