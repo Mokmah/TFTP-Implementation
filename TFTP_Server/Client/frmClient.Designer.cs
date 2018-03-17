@@ -85,6 +85,7 @@
             this.btnFileSearch.TabIndex = 4;
             this.btnFileSearch.Text = "Parcourir...";
             this.btnFileSearch.UseVisualStyleBackColor = true;
+            this.btnFileSearch.Click += new System.EventHandler(this.btnFileSearch_Click);
             // 
             // lblRemoteFileName
             // 

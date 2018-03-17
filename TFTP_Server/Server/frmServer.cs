@@ -2,6 +2,10 @@
 using System.Threading;
 using System.Windows.Forms;
 
+/************************
+ *  Par William Garneau 
+ ***********************/
+
 namespace Server
 {
     public partial class frmServer : Form
