@@ -18,3 +18,13 @@ F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Serv
 F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.pdb
 E:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
 F:\Session 4\Réseau et Linux\Réseau\Laboratoire 6\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.exe.config
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.exe
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\bin\Debug\Server.pdb
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.frmServer.resources
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.Properties.Resources.resources
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csproj.GenerateResource.Cache
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.exe
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Server\obj\Debug\Server.pdb
