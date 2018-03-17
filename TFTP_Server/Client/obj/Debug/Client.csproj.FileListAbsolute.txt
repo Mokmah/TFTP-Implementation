@@ -1,9 +1,9 @@
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\bin\Debug\Client.exe
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\bin\Debug\Client.pdb
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
-D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.Form1.resources
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.Properties.Resources.resources
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.csproj.GenerateResource.Cache
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.exe
 D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.pdb
+D:\Github clones\TFTP\TFTP-Server\TFTP_Server\Client\obj\Debug\Client.frmClient.resources

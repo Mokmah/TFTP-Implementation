@@ -45,7 +45,7 @@
             // 
             this.lblFilePath.AutoSize = true;
             this.lblFilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFilePath.Location = new System.Drawing.Point(15, 50);
+            this.lblFilePath.Location = new System.Drawing.Point(1, 50);
             this.lblFilePath.Name = "lblFilePath";
             this.lblFilePath.Size = new System.Drawing.Size(238, 25);
             this.lblFilePath.TabIndex = 0;
@@ -63,7 +63,7 @@
             // 
             this.lblIpServer.AutoSize = true;
             this.lblIpServer.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIpServer.Location = new System.Drawing.Point(37, 120);
+            this.lblIpServer.Location = new System.Drawing.Point(23, 120);
             this.lblIpServer.Name = "lblIpServer";
             this.lblIpServer.Size = new System.Drawing.Size(216, 25);
             this.lblIpServer.TabIndex = 2;
@@ -91,7 +91,7 @@
             // 
             this.lblRemoteFileName.AutoSize = true;
             this.lblRemoteFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRemoteFileName.Location = new System.Drawing.Point(44, 184);
+            this.lblRemoteFileName.Location = new System.Drawing.Point(30, 186);
             this.lblRemoteFileName.Name = "lblRemoteFileName";
             this.lblRemoteFileName.Size = new System.Drawing.Size(209, 25);
             this.lblRemoteFileName.TabIndex = 5;
