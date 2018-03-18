@@ -7,5 +7,6 @@ namespace Client.C_TFTPClient
 {
     class Download
     {
+
     }
 }

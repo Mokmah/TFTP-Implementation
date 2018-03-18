@@ -40,7 +40,7 @@ namespace Client.C_TFTPClient
             }
             catch(SocketException se)
             {
-                f.Invoke(f.ServerStatus, new object[] { "La connexion au serveur n'a pas marchée... Veuillez réessayer" });
+                f.Invoke(f.ServerStatus, new object[] { string.Format("La connexion au serveur n'a pas marchée : {0}", se.Message) });
             }
             
         }
