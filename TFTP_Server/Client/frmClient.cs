@@ -32,5 +32,15 @@ namespace Client
             m_FilePath = fileDialog.FileName;
             txtFilePath.Text = m_FilePath;
         }
+
+        private void btnUpload_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

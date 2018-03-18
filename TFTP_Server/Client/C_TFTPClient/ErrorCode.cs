@@ -1,11 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/// <summary>
+/// Description des erreurs possibles dans un transfert de fichiers TFTP
+/// </summary>
 
 namespace Client.C_TFTPClient
 {
-    class ErrorCode
-    {
-    }
+       // Erreurs possibles dans un transfert TFTP
+       enum ErrorCode
+       {
+           NON_DEFINI,
+           FICHIER_NON_TROUVE,
+           VIOLATION_ACCES,
+           DISQUE_PLEIN,
+           OPERATION_TFTP_ILLEGALE,
+           TRANSFERT_ID_INCONNU,
+           FICHIER_EXISTANT,
+           UTILISATEUR_INCONNU
+       };
 }
