@@ -19,10 +19,17 @@ namespace Client
         OpenFileDialog fileDialog = new OpenFileDialog();
         string m_FilePath;
 
+        // Méthode déléguée pour afficher le statut du client
+        public delegate void dSetText(string str);
+        public dSetText ServerStatus;
+
         public frmClient()
         {
             InitializeComponent();
             txtServerIPAdress.Text = "127.0.0.1";
+
+            // Instantiation de la méthode déléguée en y associant sa méthode cible.
+            ServerStatus = new dSetText(UpdateStatus);
         }
 
         // Évènement pour chercher un fichier dans un dialogue et retourner un string correspondant
@@ -41,6 +48,12 @@ namespace Client
         private void btnDownload_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void UpdateStatus(string Status)
+        {
+            // Envoi du statut dans le textbox du formulaire
+            txtStatus.Text += Status + "\r\n";
         }
     }
 }

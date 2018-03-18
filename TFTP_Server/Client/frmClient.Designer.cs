@@ -112,7 +112,7 @@
             // btnUpload
             // 
             this.btnUpload.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpload.Location = new System.Drawing.Point(103, 194);
+            this.btnUpload.Location = new System.Drawing.Point(78, 204);
             this.btnUpload.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(213, 57);
@@ -124,7 +124,7 @@
             // btnDownload
             // 
             this.btnDownload.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDownload.Location = new System.Drawing.Point(370, 194);
+            this.btnDownload.Location = new System.Drawing.Point(461, 204);
             this.btnDownload.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(213, 57);
@@ -135,17 +135,17 @@
             // 
             // txtStatus
             // 
-            this.txtStatus.Location = new System.Drawing.Point(18, 292);
+            this.txtStatus.Location = new System.Drawing.Point(24, 303);
             this.txtStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Size = new System.Drawing.Size(683, 288);
+            this.txtStatus.Size = new System.Drawing.Size(662, 288);
             this.txtStatus.TabIndex = 9;
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(18, 271);
+            this.lblStatus.Location = new System.Drawing.Point(28, 274);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(56, 17);
             this.lblStatus.TabIndex = 10;
@@ -156,7 +156,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(711, 589);
+            this.ClientSize = new System.Drawing.Size(704, 611);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.btnDownload);
