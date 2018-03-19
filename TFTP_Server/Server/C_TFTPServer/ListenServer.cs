@@ -74,7 +74,6 @@ namespace Server.C_TFTP
                                 f.Invoke(f.ServerStatus, new object[] { string.Format("Transfert du fichier {0} vers {1}", fileName, DistantPoint.ToString()) });
                                 Thread threadRRQ = new Thread(new ThreadStart(rrQ.RRQThread));
                                 threadRRQ.Start();
-
                                 break;
 
                             case 2: // Write Request
@@ -131,7 +130,6 @@ namespace Server.C_TFTP
                     return 2;
                 }
             }
-
             return 0;
         }
     }

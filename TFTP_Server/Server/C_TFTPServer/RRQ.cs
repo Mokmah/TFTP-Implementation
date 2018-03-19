@@ -66,12 +66,12 @@ namespace Server.C_TFTP
                         if (!(bRead = sRRQ.Poll(5000000, SelectMode.SelectRead)))
                         {
                             nTimeOut++;
-                            f.Invoke(f.ServerStatus, new object[] { "Attente du client" });
+                            f.Invoke(f.ServerStatus, new object[] { "Attente du client, le pare feu est-il désactivé des deux côtés?" });
                         }
                         else
                         {
                             nTimeOut = 0;
-                            sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                            //sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
                             sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
                             // Verification dans une erreur de transfert de bloc
                             if (!(bTamponReception[0] == 0 && bTamponReception[1] == 4))

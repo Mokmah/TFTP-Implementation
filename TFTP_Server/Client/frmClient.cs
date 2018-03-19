@@ -19,6 +19,9 @@ namespace Client
         OpenFileDialog fileDialog = new OpenFileDialog();
         string m_FilePath;
 
+        // Accès aux méthodes des autres classes
+
+
         // Méthode déléguée pour afficher le statut du client
         public delegate void dSetText(string str);
         public dSetText ServerStatus;
@@ -42,7 +45,12 @@ namespace Client
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-
+            C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
+            upload.ConnexionToServer(txtServerIPAdress.Text);
+            
+            upload.SetFichier(m_FilePath);
+            Thread threadUpload = new Thread(new ThreadStart(upload.UploadThread));
+            threadUpload.Start();
         }
 
         private void btnDownload_Click(object sender, EventArgs e)

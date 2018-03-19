@@ -62,13 +62,13 @@ namespace Server.C_TFTP
                     if (!(bRead = sWRQ.Poll(5000000, SelectMode.SelectRead)))
                     {
                         nTimeOut++;
-                        f.Invoke(f.ServerStatus, new object[] { "Attente du client" });
+                        f.Invoke(f.ServerStatus, new object[] { "Attente du client, le pare feu est-il désactivé des deux côtés?" });
                     }
                     else
                     {
                         nTimeOut = 0;
                         // Recevoir les informations des blocs
-                        sWRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                        //sWRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
                         nRead = sWRQ.ReceiveFrom(bTamponReception, ref PointDistantWRQ);
                         if (!(bTamponReception[0] == 0 && bTamponReception[1] == 3 && bTamponReception[2] == (byte)(nBlock >> 8) && bTamponReception[3] == (byte)(nBlock % 256)))
                         {
