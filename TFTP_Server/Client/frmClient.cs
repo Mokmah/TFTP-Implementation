@@ -29,7 +29,7 @@ namespace Client
         public frmClient()
         {
             InitializeComponent();
-            txtServerIPAdress.Text = "127.0.0.1";
+            txtServerIPAdress.Text = "192.168.1.118";
 
             // Instantiation de la méthode déléguée en y associant sa méthode cible.
             ServerStatus = new dSetText(UpdateStatus);
@@ -48,7 +48,7 @@ namespace Client
             C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
             upload.ConnexionToServer(txtServerIPAdress.Text);
             
-            upload.SetFichier(m_FilePath);
+            upload.SetFichier(m_FilePath, txtRemoteFileName.Text);
             Thread threadUpload = new Thread(new ThreadStart(upload.UploadThread));
             threadUpload.Start();
         }
