@@ -78,6 +78,8 @@ namespace Client.C_TFTPClient
             sUpload.SendTo(bTrame, bTrame.Length, SocketFlags.None, PointDistantUpload);
             // Réception ensuite
             nRead = sUpload.ReceiveFrom(bTamponReception,SocketFlags.None, ref PointLocalUpload);
+
+            // Still not working 
             bTrame = new byte[516];
             do
             {
