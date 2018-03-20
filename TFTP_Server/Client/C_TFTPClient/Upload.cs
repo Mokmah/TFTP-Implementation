@@ -64,66 +64,42 @@ namespace Client.C_TFTPClient
         public void UploadThread()
         {
             // Définition des variables pour le thread
-            int nBlock = 0, nLength = 516;
-            BinaryReader br;
-            byte[] bTrame, bTamponReception = new byte[516];
+            byte[] bTrame = new byte[516];
+            bool bRead;
+            byte[] bTamponReception = new byte[516];
+            int nRead = 0, nTimeOut = 0, nAckError = 0, nBlock = 0;
+            FileStream fs;
 
             TrameUploadEncoding(out bTrame);
 
-            // Entrer dans le fichier pour lire son contenu et l'envoyer
-            try
-            {
-                br = new BinaryReader(new FileStream(fileToUpload, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-            }
-            catch (Exception e)
-            {
-                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu un problème dans l'ouverture du fichier local {0} ", fileToUpload) + e.Message });
-                return;
-            }
-
+            // Ajouter une validation éventuellement
+            fs = new FileStream(fileToUpload, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            // Envoi de la requête
             sUpload.SendTo(bTrame, bTrame.Length, SocketFlags.None, PointDistantUpload);
-
-            // Réception de la part du serveur
-            try
+            // Réception ensuite
+            nRead = sUpload.ReceiveFrom(bTamponReception,SocketFlags.None, ref PointLocalUpload);
+            bTrame = new byte[516];
+            do
             {
+                if (bTamponReception[1] == 4 && (((bTamponReception[2] << 8) % 256) | bTamponReception[3]) == nBlock)
+                {
+                    bTrame[0] = 0;
+                    bTrame[1] = 3;
+                    bTrame[2] = (byte)(nBlock >> 8);
+                    bTrame[3] = (byte)(nBlock % 256);
+                    for (int i = 4; i < fs.Length + 4; i++)
+                    {
+                        bTrame[i] = (byte)fs.ReadByte();
+                    }
+                    nRead = sUpload.SendTo(bTrame, bTrame.Length, SocketFlags.None, PointLocalUpload);
+                    nBlock++;
+                }
                 sUpload.ReceiveFrom(bTamponReception, ref PointLocalUpload);
-            }
-            catch (Exception e)
-            {
-                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu un problème dans la réception de la demande au serveur {0}", PointDistantUpload.ToString()) });
-                return;
-            }
-
-            while (bTamponReception[1] != 5 && nLength == 516)
-            {
-                if (bTamponReception[1] != 4 && (((bTamponReception[2] << 8) % 256 | bTamponReception[3]) == nBlock))
-                {
-                    br.ReadBytes(512);
-                    TrameUploadEncoding(out bTrame);
-
-                    try
-                    {
-                        nLength = sUpload.SendTo(bTrame, bTrame.Length, SocketFlags.None, PointDistantUpload);
-                    }
-                    catch(Exception e)
-                    {
-                        f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu un problème dans l'envoi d'un ack au serveur {0} ", PointDistantUpload.ToString()) + e.Message });
-                        return;
-                    }
-                }
-                try
-                {
-                    sUpload.ReceiveFrom(bTamponReception, ref PointLocalUpload);
-                }
-                catch (Exception e)
-                {
-                    f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu un problème dans la réception des données du serveur {0}", PointDistantUpload.ToString()) });
-                    return;
-                }
-            }
+            } while (bTamponReception[1] != 5 && nRead == 516);
 
             sUpload.Close();
-            br.Close();
+            fs.Close();
+
 
         }
 
