@@ -29,6 +29,7 @@ namespace Client
         public frmClient()
         {
             InitializeComponent();
+            UpdateStatus("Bienvenue dans le client de transfert de fichiers TFTP !\r\n");
             txtServerIPAdress.Text = "192.168.1.118";
 
             // Instantiation de la méthode déléguée en y associant sa méthode cible.
