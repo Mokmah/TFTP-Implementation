@@ -15,7 +15,7 @@ namespace Client.C_TFTPClient
 
         // Point local
         EndPoint PointDistantUpload;
-        EndPoint PointLocalUpload = new IPEndPoint(0, 69);
+        EndPoint PointLocalUpload = new IPEndPoint(0, 0);
 
         // Tableau de bytes qui va renfermer les trames pour l'intéraction avec le serveur
         byte[] bTrame = new byte[516];
@@ -80,7 +80,7 @@ namespace Client.C_TFTPClient
                     bTrame[3] = (byte)(nBlock % 256);
                     do
                     {
-                        sUpload.SendTo(bTrame, 4 + nRead, SocketFlags.None, PointDistantUpload);
+                        sUpload.SendTo(bTrame, nRead + 4, SocketFlags.None, PointDistantUpload);
                         // Attendre la réception de la trame de la part du serveur et mettre des timeout si c'est trop long 
                         if (!(bRead = sUpload.Poll(5000000, SelectMode.SelectRead)))
                         {
@@ -107,12 +107,12 @@ namespace Client.C_TFTPClient
                         }
                     } while (!bRead && nTimeOut < 10 && nAckError < 3);
                 } while (nRead == 512 && nTimeOut < 10 && nAckError < 3);
+                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès ! \r\n" });
             }
             else // Quand le fichier local n'existe pas 
             {
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Le fichier local n'existe pas : ", lFileUpload) });
             }
-            f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès ! \r\n" });
             fs.Close();
             sUpload.Close();
         }
