@@ -46,10 +46,9 @@ namespace Client
         private void btnUpload_Click(object sender, EventArgs e)
         {
             C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
-            upload.ConnexionToServer(txtServerIPAdress.Text);
-            
-            upload.SetFichier(m_FilePath, txtRemoteFileName.Text);
-            Thread threadUpload = new Thread(new ThreadStart(upload.UploadThread));
+            upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
+            upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
+            Thread threadUpload = new Thread(new ThreadStart(upload.uploadThread));
             threadUpload.Start();
         }
 
