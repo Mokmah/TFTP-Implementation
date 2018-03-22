@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Client.C_TFTPClient
 {
+    /// <summary>
+    /// Classe du client TFTP qui servira à écrire des fichiers sur le poste sur lequel est situé le serveur
+    /// - Téléversement de fichiers -
+    /// </summary>
     class Upload
     {
         // Définition des variables *****
@@ -48,7 +52,7 @@ namespace Client.C_TFTPClient
             rFileUpload = remote;
         }
 
-        public void uploadThread()
+        public void uploadFile()
         {
             // Définition des variables du thread
             int bLen = 516;
@@ -74,7 +78,8 @@ namespace Client.C_TFTPClient
                 // Ouverture du fichier avec un filestream
                 fs = File.Open(lFileUpload, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-                f.Invoke(f.ServerStatus, new object[] { string.Format("Ouverture du fichier local à lire.") });
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Ouverture du fichier à lire : {0}", lFileUpload) });
+                f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
                 while (bTamponReception[1] != 5 && bLen == 516)
                 {
                     if (bTamponReception[1] == 4 && (((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)
@@ -107,7 +112,8 @@ namespace Client.C_TFTPClient
                         f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception : ", se.Message) });
                         return;
                     }
-                }  
+                }
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} envoyés à {1}", nBlock, PointDistantUpload.ToString()) });
                 f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès ! \r\n" });
             }
             else // Quand le fichier local n'existe pas 
@@ -160,7 +166,7 @@ namespace Client.C_TFTPClient
             bTrame[bFile.Length + 2] = 0;
             Array.Copy(bMode, 0, bTrame, bFile.Length + 3, bMode.Length); // Ajout du mode
             bTrame[bTrame.Length - 1] = 0;
-            f.Invoke(f.ServerStatus, new object[] { "La trame initiale est prête à être envoyée." });
+            f.Invoke(f.ServerStatus, new object[] { "La trame initiale de téléversement est prête à être envoyée." });
         }
         // Encoder les trames de données qui seront envoyées au serveur
         private void dataEncoding(int nBlock, byte[] fileContent)

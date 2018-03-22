@@ -49,7 +49,7 @@ namespace Client
             C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
             upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
             upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
-            upload.uploadThread();
+            upload.uploadFile();
         }
 
         private void btnDownload_Click(object sender, EventArgs e)
