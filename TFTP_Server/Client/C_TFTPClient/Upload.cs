@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Client.C_TFTPClient
 {
-    class Upload : ErrorType
+    class Upload
     {
         // Définition des variables *****
 
@@ -18,8 +18,9 @@ namespace Client.C_TFTPClient
         EndPoint PointLocalUpload = new IPEndPoint(0, 0);
 
         // Tableau de bytes qui va renfermer les trames pour l'intéraction avec le serveur
-        byte[] bTrame = new byte[516];
+        byte[] bTrame;
         byte[] bTamponReception = new byte[516];
+        int nBlock = 0, nRead = 0;
 
         // Instantiation du formulaire pour y envoyer le statut du client
         frmClient f;
@@ -38,6 +39,7 @@ namespace Client.C_TFTPClient
         {
             PointDistantUpload = new IPEndPoint(IP, 69);
             sUpload.Bind(PointLocalUpload);
+            sUpload.ReceiveTimeout = 15000;
         }
 
         public void SetFichier(string local, string remote)
@@ -49,75 +51,75 @@ namespace Client.C_TFTPClient
         public void uploadThread()
         {
             // Définition des variables du thread
-            bool bRead;
-            int nRead = 0, nTimeOut = 0, nAckError = 0, nBlock = 0;
+            int bLen = 516;
+            byte[] file = new byte[516];
 
             if (File.Exists(lFileUpload)) // Vérification de l'existence du fichier local avant de le lire.
             {
+                // Encoder la trame initiale pour l'Upload
                 initUploadEncoding();
                 // Envoi de la demande d'Upload
                 sendToServer();
+
                 // Réception de l'accord pour Upload
-                receiveFomServer();
-                // S'assurer de la réception d'un ACK
-                if (bTamponReception[1] == 4)
+                try
                 {
-                    f.Invoke(f.ServerStatus, new object[] { string.Format("Nous avons l'accord du serveur pour faire un upload")});
+                    sUpload.ReceiveFrom(bTamponReception, ref PointLocalUpload);
+                }
+                catch (SocketException se)
+                {
+                    f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception : ", se.Message) });
                 }
 
                 // Ouverture du fichier avec un filestream
-                fs = File.Open(lFileUpload, FileMode.Open, FileAccess.Read, FileShare.Read);
-                f.Invoke(f.ServerStatus, new object[] { string.Format("Ouverture du fichier local à lire.") });
+                fs = File.Open(lFileUpload, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-                do
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Ouverture du fichier local à lire.") });
+                while (bTamponReception[1] != 5 && bLen == 516)
                 {
-                    // Encoder la trame contenant le fichier à transmettre
-                    nRead = fs.Read(bTrame, 4, 512);
-                    nBlock++;
-                    bTrame[0] = 0;
-                    bTrame[1] = 3;
-                    bTrame[2] = (byte)(nBlock >> 8);
-                    bTrame[3] = (byte)(nBlock % 256);
-                    do
+                    if (bTamponReception[1] == 4 && (((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)
                     {
-                        sUpload.SendTo(bTrame, nRead + 4, SocketFlags.None, PointDistantUpload);
-                        // Attendre la réception de la trame de la part du serveur et mettre des timeout si c'est trop long 
-                        if (!(bRead = sUpload.Poll(5000000, SelectMode.SelectRead)))
+                        file = new byte[512];
+                        nRead = 0;
+                        // Encoder la trame contenant le fichier à transmettre
+                        nRead = fs.Read(file, 0, 512);
+                        nBlock++;
+                        dataEncoding(nBlock, file);
+
+                        //Envoi de la trame avec le contenu du fichier
+                        try
                         {
-                            nTimeOut++;
-                            f.Invoke(f.ServerStatus, new object[] { "Attente du client, le pare feu est-il désactivé des deux côtés?" });
+                            bLen = sUpload.SendTo(bTrame, bTrame.Length, SocketFlags.None, PointLocalUpload);
                         }
-                        else
+                        catch (SocketException se)
                         {
-                            nTimeOut = 0;
-                            // Réception du Ack de la part du serveur pour ce qui est du contenu du fichier
-                            sUpload.ReceiveFrom(bTamponReception, ref PointDistantUpload);
-                            // Vérification d'une erreur de transfert de bloc
-                            if (!(bTamponReception[0] == 0 && bTamponReception[1] == 4))
-                            {
-                                nAckError++;
-                            }
-                            // S'il n'y en a pas, ajouter le nombre de bloc à la trame dans le cas d'un réenvoi
-                            else
-                            {
-                                nAckError = 0;
-                                nBlock = bTamponReception[2] << 8;
-                                nBlock += bTamponReception[3];
-                            }
+                            f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission : ", se.Message) });
+                            return;
                         }
-                    } while (!bRead && nTimeOut < 10 && nAckError < 3);
-                } while (nRead == 512 && nTimeOut < 10 && nAckError < 3);
+                    }
+                    // Réception de la trame avec le bon # de bloc correspondant
+                    try
+                    {
+                        sUpload.ReceiveFrom(bTamponReception, ref PointLocalUpload);
+                    }
+                    catch (SocketException se)
+                    {
+                        f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception : ", se.Message) });
+                        return;
+                    }
+                }  
                 f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès ! \r\n" });
             }
             else // Quand le fichier local n'existe pas 
             {
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Le fichier local n'existe pas : ", lFileUpload) });
+                return;
             }
             fs.Close();
             sUpload.Close();
         }
         #region Méthodes pour intéragir avec le serveur
-        // Méthode pour envoyer une trame au serveur
+        // Méthode pour envoyer une trame au serveur au début du transfert
         private void sendToServer()
         {
             // Envoi de la demande d'Upload
@@ -128,14 +130,15 @@ namespace Client.C_TFTPClient
             catch (SocketException se)
             {
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission : ", se.Message) });
+                return;
             }
         }
-        // Méthode pour recevoir une trame de la part du serveur
+        // Méthode pour recevoir une trame de la part du serveur au début du transfert
         private void receiveFomServer()
         {
             try
             {
-                sUpload.ReceiveFrom(bTamponReception, ref PointDistantUpload);
+                sUpload.ReceiveFrom(bTamponReception, ref PointLocalUpload);
             }
             catch (SocketException se)
             {
@@ -149,6 +152,8 @@ namespace Client.C_TFTPClient
             byte[] bFile = Encoding.ASCII.GetBytes(rFileUpload);
             byte[] bMode = Encoding.ASCII.GetBytes("octet");
 
+            bTrame = new byte[4 + bFile.Length + bMode.Length];
+
             bTrame[0] = 0;
             bTrame[1] = 2; // Write request
             Array.Copy(bFile, 0, bTrame, 2, bFile.Length); // Ajout du fichier
@@ -156,6 +161,18 @@ namespace Client.C_TFTPClient
             Array.Copy(bMode, 0, bTrame, bFile.Length + 3, bMode.Length); // Ajout du mode
             bTrame[bTrame.Length - 1] = 0;
             f.Invoke(f.ServerStatus, new object[] { "La trame initiale est prête à être envoyée." });
+        }
+        // Encoder les trames de données qui seront envoyées au serveur
+        private void dataEncoding(int nBlock, byte[] fileContent)
+        {
+            // Le tableau de byte sera aussi gros que le fichier + les éléments TFTP
+            bTrame = new byte[4 + nRead];
+            // AJouter le bon type de paquet avec le bon # de bloc  
+            bTrame[0] = 0;
+            bTrame[1] = 3;
+            bTrame[2] = bTrame[2] = (byte)(nBlock >> 8);
+            bTrame[3] = (byte)(nBlock % 256);
+            Array.Copy(fileContent, 0, bTrame, 4, nRead);
         }
         #endregion
     }

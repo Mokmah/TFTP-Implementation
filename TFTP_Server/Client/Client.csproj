@@ -43,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="C_TFTPClient\Download.cs" />
-    <Compile Include="C_TFTPClient\ErrorCode.cs" />
-    <Compile Include="C_TFTPClient\ErrorType.cs" />
-    <Compile Include="C_TFTPClient\opCodes.cs" />
     <Compile Include="C_TFTPClient\Upload.cs" />
     <Compile Include="frmClient.cs">
       <SubType>Form</SubType>
