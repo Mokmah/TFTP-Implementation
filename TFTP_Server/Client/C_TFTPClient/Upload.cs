@@ -17,7 +17,7 @@ namespace Client.C_TFTPClient
         // Socket pour l'Upload
         Socket sUpload = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-        // Point local
+        // Point local et distant
         EndPoint PointDistantUpload;
         EndPoint PointLocalUpload = new IPEndPoint(0, 0);
 
