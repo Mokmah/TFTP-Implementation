@@ -46,21 +46,52 @@ namespace Client
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
-            upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
-            upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
-            upload.uploadFile();
+            bool flag = ValidateBoxes();
+            if (flag)
+            {
+                C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
+                upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
+                upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
+                upload.UploadFile();
+            }
         }
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-
+            bool flag = ValidateBoxes();
+            if (flag)
+            {
+                C_TFTPClient.Download download = new C_TFTPClient.Download(this);
+                download.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
+                download.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
+                download.DownloadFile();
+            }
         }
 
         public void UpdateStatus(string Status)
         {
             // Envoi du statut dans le textbox du formulaire
             txtStatus.Text += Status + "\r\n";
+        }
+
+        private bool ValidateBoxes()
+        {
+            if (txtServerIPAdress.Text == "")
+            {
+                MessageBox.Show("Vous devez entrer une addresse IP valide.", "Avertissement IP", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return false;
+            }
+            if (txtFilePath.Text == "")
+            {
+                MessageBox.Show("Vous devez entrer un fichier local valide.", "Avertissement fichier local", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return false;
+            }
+            if (txtRemoteFileName.Text == "")
+            {
+                MessageBox.Show("Vous devez entrer un nom de fichier distant valide.", "Avertissement fichier distant", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return false;
+            }
+            return true;
         }
     }
 }

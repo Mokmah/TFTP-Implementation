@@ -52,7 +52,7 @@ namespace Client.C_TFTPClient
             rFileUpload = remote;
         }
 
-        public void uploadFile()
+        public void UploadFile()
         {
             // Définition des variables du thread
             int bLen = 516;
@@ -70,7 +70,7 @@ namespace Client.C_TFTPClient
                 {
                     sUpload.ReceiveFrom(bTamponReception, ref PointLocalUpload);
                 }
-                catch (SocketException se)
+                catch (Exception se)
                 {
                     f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception : ", se.Message) });
                 }
@@ -149,6 +149,7 @@ namespace Client.C_TFTPClient
             catch (SocketException se)
             {
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception : ", se.Message) });
+                return;
             }
         }
         // Encoder la première trame à envoyer au serveur pour initialiser le téléversement
