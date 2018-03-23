@@ -77,9 +77,10 @@ namespace Client.C_TFTPClient
 
                 // Ouverture du fichier avec un filestream
                 fs = File.Open(lFileUpload, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
+                
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Ouverture du fichier à lire : {0}", lFileUpload) });
                 f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
+                // Boucle de thread de transfert de blocks vers le serveur
                 while (bTamponReception[1] != 5 && bLen == 516)
                 {
                     if (bTamponReception[1] == 4 && (((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)

@@ -48,3 +48,13 @@ C:\Users\usager\Documents\GitHub\TFTP-Implementation\TFTP_Server\Server\obj\Debu
 C:\Users\usager\Documents\GitHub\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
 C:\Users\usager\Documents\GitHub\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.exe
 C:\Users\usager\Documents\GitHub\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.pdb
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\bin\Debug\Server.exe.config
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\bin\Debug\Server.exe
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\bin\Debug\Server.pdb
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.frmServer.resources
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.Properties.Resources.resources
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.csproj.GenerateResource.Cache
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.exe
+C:\Git Clones\TFTP-Implementation\TFTP_Server\Server\obj\Debug\Server.pdb

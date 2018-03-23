@@ -5,8 +5,13 @@ using System.IO;
 
 namespace Server.C_TFTP
 {
+    /// <summary>
+    /// Classe qui va gérer les demandes d'écriture du côté du serveur TFTP
+    /// - Write Request - 
+    /// </summary>
     class WRQ : ErrorType
     {
+
         // Définition des variables *****
 
         // Chaîne de caractères renfermant le code d'erreur
@@ -54,7 +59,14 @@ namespace Server.C_TFTP
                 // Ouverture du fichier avec filestream
                 fs = File.Open(fileWRQ, FileMode.CreateNew, FileAccess.Write, FileShare.None);
                 // Envoyer un ack pour commencer le transfert
-                sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);
+                try
+                {
+                    sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);
+                }
+                catch(SocketException se)
+                {
+                    f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission initiale {0]", se.Message) });
+                }
                 f.Invoke(f.ServerStatus, new object[] { "On envoit un premier ACK au client pour faire la demande" });
                 do
                 {
@@ -68,8 +80,8 @@ namespace Server.C_TFTP
                     {
                         nTimeOut = 0;
                         // Recevoir les informations des blocs
-                        //sWRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
-                        try
+                        sWRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                        try // Recevoir les informations des blocs
                         {
                             nRead = sWRQ.ReceiveFrom(bTamponReception, ref PointDistantWRQ);
                         }
@@ -122,7 +134,14 @@ namespace Server.C_TFTP
         // Méthode d'envoi de ACK au client
         private void SendAck(byte[] bTrame)
         {
-            sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);
+            try
+            {
+                sWRQ.SendTo(bTrame, 4, SocketFlags.None, PointDistantWRQ);
+            }
+            catch(SocketException se)
+            {
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur dans l'envoi du ACK", se.Message) });
+            }
         }
     }
 }

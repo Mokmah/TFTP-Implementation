@@ -4,6 +4,10 @@ using System.IO;
 
 namespace Server.C_TFTP
 {
+    /// <summary>
+    /// Classe qui va gérer les demandes de lecture du côté du serveur TFTP
+    /// - Read Request - 
+    /// </summary>
     class RRQ : ErrorType
     {
         // Définition des variables***
@@ -62,7 +66,17 @@ namespace Server.C_TFTP
                     bTrame[3] = (byte)(nBlock % 256);
                     do
                     {
-                        sRRQ.SendTo(bTrame, 4 + nRead, SocketFlags.None, PointDistantRRQ);
+                        try  // Essayer d'envoyer la trame actuelle au serveur, sinon, afficher une erreur
+                        {
+                            sRRQ.SendTo(bTrame, 4 + nRead, SocketFlags.None, PointDistantRRQ);
+                        }
+                        catch(SocketException se)
+                        {
+                            f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception, l'hôte distant a dû être fermé") });
+                            return;
+                        }
+
+                        // Attendre une réponse du client
                         if (!(bRead = sRRQ.Poll(5000000, SelectMode.SelectRead)))
                         {
                             nTimeOut++;
@@ -71,7 +85,8 @@ namespace Server.C_TFTP
                         else
                         {
                             nTimeOut = 0;
-                            //sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                           // Gestion des sockets bloquants
+                            sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
                             try
                             {
                                 nRead = sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
