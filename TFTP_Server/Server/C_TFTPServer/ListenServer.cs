@@ -6,6 +6,10 @@ using System.Windows.Forms;
 
 namespace Server.C_TFTP
 {
+    /// <summary>
+    /// Classe qui va écouter en permanence si des trames TFTP lui sont envoyées.
+    /// - Serveur d'écoute TFTP -
+    /// </summary>
     class ListenServer : ErrorType
     {
         // Variable de fin de la thread
