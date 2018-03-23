@@ -72,7 +72,15 @@ namespace Server.C_TFTP
                         {
                             nTimeOut = 0;
                             //sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
-                            sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
+                            try
+                            {
+                                nRead = sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
+                            }
+                            catch (SocketException se)
+                            {
+                                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception, l'hôte distant a dû être fermé") });
+                                return;
+                            }
                             // Verification dans une erreur de transfert de bloc
                             if (!(bTamponReception[0] == 0 && bTamponReception[1] == 4))
                             {

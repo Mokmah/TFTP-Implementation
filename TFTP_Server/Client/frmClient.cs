@@ -56,6 +56,7 @@ namespace Client
                 upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
                 upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
                 t = new Thread(new ThreadStart(upload.UploadFile));
+                t.IsBackground = true;
                 t.Start();
             }
         }
@@ -69,6 +70,7 @@ namespace Client
                 download.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
                 download.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
                 t = new Thread(new ThreadStart(download.DownloadFile));
+                t.IsBackground = true;
                 t.Start();
             }
         }

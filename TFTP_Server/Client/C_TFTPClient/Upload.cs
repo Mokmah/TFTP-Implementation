@@ -114,7 +114,7 @@ namespace Client.C_TFTPClient
                     }
                 }
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} envoyés à {1}", nBlock, PointDistantUpload.ToString()) });
-                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est effectué avec succès ! \r\n" });
+                f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est terminé avec succès ! \r\n" });
             }
             else // Quand le fichier local n'existe pas 
             {
