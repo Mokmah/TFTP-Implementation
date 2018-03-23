@@ -20,7 +20,10 @@ namespace Client
         string m_FilePath;
 
         // Accès aux méthodes des autres classes
+        C_TFTPClient.Upload upload;
 
+        // Variable pour le thread
+        Thread t;
 
         // Méthode déléguée pour afficher le statut du client
         public delegate void dSetText(string str);
@@ -49,10 +52,11 @@ namespace Client
             bool flag = ValidateBoxes();
             if (flag)
             {
-                C_TFTPClient.Upload upload = new C_TFTPClient.Upload(this);
+                upload = new C_TFTPClient.Upload(this);
                 upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
                 upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
-                upload.UploadFile();
+                t = new Thread(new ThreadStart(upload.UploadFile));
+                t.Start();
             }
         }
 
@@ -64,7 +68,8 @@ namespace Client
                 C_TFTPClient.Download download = new C_TFTPClient.Download(this);
                 download.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
                 download.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
-                download.DownloadFile();
+                t = new Thread(new ThreadStart(download.DownloadFile));
+                t.Start();
             }
         }
 
