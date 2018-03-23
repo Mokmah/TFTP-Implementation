@@ -55,8 +55,8 @@ namespace Client
                 upload = new C_TFTPClient.Upload(this);
                 upload.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
                 upload.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
-                t = new Thread(new ThreadStart(upload.UploadFile)); // Partir le thread et le linker avec la méthode de Upload
-                t.IsBackground = true; // Fermer le thread quand la fenêtre ferme
+                t = new Thread(new ThreadStart(upload.UploadFile));
+                t.IsBackground = true;
                 t.Start();
             }
         }
@@ -69,7 +69,7 @@ namespace Client
                 C_TFTPClient.Download download = new C_TFTPClient.Download(this);
                 download.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
                 download.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
-                t = new Thread(new ThreadStart(download.DownloadFile)); // Partir le thread et le linker avec la méthode de download
+                t = new Thread(new ThreadStart(download.DownloadFile));
                 t.IsBackground = true; // Fermer le thread quand la fenêtre ferme
                 t.Start();
             }
