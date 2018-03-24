@@ -2,8 +2,6 @@
 using System.Windows.Forms;
 using System.Threading;
 using System.Net;
-using System.Net.Sockets;
-using System.IO;
 
 /************************
  *  Par William Garneau 
@@ -33,7 +31,8 @@ namespace Client
         {
             InitializeComponent();
             UpdateStatus("Bienvenue dans le client de transfert de fichiers TFTP !\r\n");
-            txtServerIPAdress.Text = "192.168.1.118";
+            txtServerIPAdress.Text = "192.168.1.117";
+            txtDownloadIP.Text = "192.168.1.117";
 
             // Instantiation de la méthode déléguée en y associant sa méthode cible.
             ServerStatus = new dSetText(UpdateStatus);
@@ -49,7 +48,7 @@ namespace Client
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            bool flag = ValidateBoxes();
+            bool flag = ValidateUploadBoxes();
             if (flag)
             {
                 upload = new C_TFTPClient.Upload(this);
@@ -63,12 +62,12 @@ namespace Client
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            bool flag = ValidateBoxes();
+            bool flag = ValidateDownloadBoxes();
             if (flag)
             {
                 C_TFTPClient.Download download = new C_TFTPClient.Download(this);
-                download.SetFichier(txtFilePath.Text, txtRemoteFileName.Text);
-                download.SetPointDistant(IPAddress.Parse(txtServerIPAdress.Text));
+                download.SetFichier(txtNewFileDownload.Text, txtDownloadRemoteFIle.Text);
+                download.SetPointDistant(IPAddress.Parse(txtDownloadIP.Text));
                 t = new Thread(new ThreadStart(download.DownloadFile)); // Partir le thread et le linker avec la méthode de download
                 t.IsBackground = true; // Fermer le thread quand la fenêtre ferme
                 t.Start();
@@ -81,7 +80,7 @@ namespace Client
             txtStatus.Text += Status + "\r\n";
         }
 
-        private bool ValidateBoxes()
+        private bool ValidateUploadBoxes()
         {
             if (txtServerIPAdress.Text == "")
             {
@@ -94,6 +93,26 @@ namespace Client
                 return false;
             }
             if (txtRemoteFileName.Text == "")
+            {
+                MessageBox.Show("Vous devez entrer un nom de fichier distant valide.", "Avertissement fichier distant", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateDownloadBoxes()
+        {
+            if (txtDownloadIP.Text == "")
+            {
+                MessageBox.Show("Vous devez entrer une addresse IP valide.", "Avertissement IP", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return false;
+            }
+            if (txtNewFileDownload.Text == "")
+            {
+                MessageBox.Show("Vous devez entrer un nouveau nom pour le fichier à télécharger", "Avertissement fichier local", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return false;
+            }
+            if (txtDownloadRemoteFIle.Text == "")
             {
                 MessageBox.Show("Vous devez entrer un nom de fichier distant valide.", "Avertissement fichier distant", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return false;

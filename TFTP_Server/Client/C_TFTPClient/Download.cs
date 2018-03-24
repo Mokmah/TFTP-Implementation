@@ -47,7 +47,7 @@ namespace Client.C_TFTPClient
 
         public void SetFichier(string local, string remote)
         {
-            lFileDownload = local;
+            lFileDownload = "C:\\TFTP\\" + local;
             rFileDownload = remote;
         }
 
@@ -58,16 +58,24 @@ namespace Client.C_TFTPClient
             byte[] file = new byte[516];
 
             // Encoder la première trame
-            initDownloadEncoding();
+            InitDownloadEncoding();
 
             // Ouverture du fichier avec Filestream
-            fs = new FileStream(lFileDownload, FileMode.Create, FileAccess.Write, FileShare.Read);
+            try
+            {
+                fs = new FileStream(lFileDownload, FileMode.Create, FileAccess.Write, FileShare.Read);
+            }
+            catch(Exception e)
+            {
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la création du fichier {0}", lFileDownload) });
+                return;
+            }
 
             // Le point local prend la définition du pointDistant
             pointLocalDownload = pointDistantDownload;
 
             // Envoyer de la demande de download
-            sendToServer();
+            SendToServer();
 
             // Réception de l'accord pour download
             try
@@ -76,18 +84,18 @@ namespace Client.C_TFTPClient
             }
             catch(Exception se)
             {
-                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception : ", se.Message) });
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception", se.Message.ToString()) });
             }
 
             // Même port pour le serveur que pour le client
-            changePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
+            ChangePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
 
             // Transfert de blocks
 
         }
 
         #region Méthodes pour communiquer avec le serveur
-        private void initDownloadEncoding()
+        private void InitDownloadEncoding()
         {
             // Transformation du mode et du fichier en bytes
             byte[] bFile = Encoding.ASCII.GetBytes(rFileDownload);
@@ -106,7 +114,7 @@ namespace Client.C_TFTPClient
 
 
         // Méthode pour envoyer une trame au serveur au début du transfert
-        private void sendToServer()
+        private void SendToServer()
         {
             // Envoi de la demande de download
             try
@@ -125,7 +133,7 @@ namespace Client.C_TFTPClient
 
         }
 
-        private void changePort(string localEndPoint, string remoteEndPoint)
+        private void ChangePort(string localEndPoint, string remoteEndPoint)
         {
             // Prendre l'IP et le port du local
             string[] local;

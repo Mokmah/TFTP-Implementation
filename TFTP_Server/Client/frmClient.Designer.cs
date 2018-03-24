@@ -148,21 +148,24 @@
             // 
             // txtStatus
             // 
+            this.txtStatus.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.txtStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtStatus.Location = new System.Drawing.Point(11, 285);
             this.txtStatus.Margin = new System.Windows.Forms.Padding(2);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Size = new System.Drawing.Size(1036, 409);
+            this.txtStatus.ReadOnly = true;
+            this.txtStatus.Size = new System.Drawing.Size(1041, 409);
             this.txtStatus.TabIndex = 9;
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.Location = new System.Drawing.Point(11, 270);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(43, 13);
+            this.lblStatus.Size = new System.Drawing.Size(51, 13);
             this.lblStatus.TabIndex = 10;
             this.lblStatus.Text = "Status :";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
