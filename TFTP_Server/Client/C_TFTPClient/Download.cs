@@ -25,6 +25,9 @@ namespace Client.C_TFTPClient
         byte[] bTrame;
         byte[] bTamponReception = new byte[516];
 
+        // Variable du numéro de packet pour intéraction avec le serveur
+        int nBlock = 1;
+
         // Instantiation du formulaire pour y envoyer le statut du client
         frmClient f;
 
@@ -41,7 +44,7 @@ namespace Client.C_TFTPClient
         public void SetPointDistant(IPAddress IP)
         {
             pointDistantDownload = new IPEndPoint(IP, 69);
-            sDownload.Bind(pointLocalDownload);
+            sDownload.Bind(new IPEndPoint(0,0));
             sDownload.ReceiveTimeout = 15000;
         }
 
@@ -54,7 +57,7 @@ namespace Client.C_TFTPClient
         public void DownloadFile()
         {
             // Définition des variables pour la méthode Download
-            int bLen;
+            int bLen  = 516;
             byte[] file = new byte[516];
 
             // Encoder la première trame
@@ -70,9 +73,7 @@ namespace Client.C_TFTPClient
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la création du fichier {0}", lFileDownload) });
                 return;
             }
-
-            // Le point local prend la définition du pointDistant
-            pointLocalDownload = pointDistantDownload;
+            f.Invoke(f.ServerStatus, new object[] { string.Format("Ouverture du fichier à lire {0}", lFileDownload) });
 
             // Envoyer de la demande de download
             SendToServer();
@@ -80,17 +81,61 @@ namespace Client.C_TFTPClient
             // Réception de l'accord pour download
             try
             {
-                sDownload.ReceiveFrom(bTamponReception, ref pointLocalDownload);
+                bLen = sDownload.ReceiveFrom(bTamponReception, ref pointLocalDownload);
             }
             catch(Exception se)
             {
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception", se.Message.ToString()) });
+                return;
             }
 
             // Même port pour le serveur que pour le client
-            ChangePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
+             //ChangePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
+
+            f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
 
             // Transfert de blocks
+            do
+            {
+                // On reçoit le block suivant
+                if ((((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)
+                {
+                    // Écrire les données reçues dans le fichier correspondant
+                    fs.Write(bTamponReception, 4, bLen - 4);
+
+                    // Envoi d'un ack au serveur pour confirmer la réception
+                    SendDataAck();
+                    nBlock++;
+                }
+
+                // On attend de voir si c'est le dernier block
+                if (bLen == 516)
+                {
+                    // Réception du prochain packet de données
+                    try
+                    {
+                        bLen = sDownload.ReceiveFrom(bTamponReception, ref pointLocalDownload);
+                    }
+                    catch (Exception e)
+                    {
+                        f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception du block de données ", e.Message) });
+                        return;
+                    }
+                    // On envoie un autre Ack si c'est le dernier block
+                    SendFinalAck();
+                }
+            } while (bTamponReception[1] != 5 && bLen == 516);
+                // S'il y a une erreur, récupérer le type et l'afficher
+                if (bTamponReception[1] == 5)
+            {
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors du transfert {0}", Encoding.GetEncoding(437).GetString(bTamponReception, 4, bTamponReception.Length - 5).Trim('\0')) });
+                return;
+            }
+            // Fermer le socket et le fichier pour terminer le transfert
+            f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} envoyés à {1}", nBlock, pointDistantDownload.ToString()) });
+            f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est terminé avec succès ! \r\n" });
+            sDownload.Close();
+            fs.Close();
 
         }
 
@@ -128,9 +173,45 @@ namespace Client.C_TFTPClient
             }
         }
 
-        private void sendAck()
+        private void SendDataAck()
         {
+            // Encoder la trame pour le ACK
+            bTrame[0] = 0;
+            bTrame[1] = 1;
+            bTrame[2] = (byte)(nBlock >> 8);// Numéro de block correspondant au bloc actuel
+            bTrame[3] = (byte)(nBlock % 256);
 
+            // Envoi de la trame au serveur
+            try
+            {
+                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointDistantDownload);
+            }
+            catch(Exception e)
+            {
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission du ACK ", e.Message) });
+                return;
+            }
+        }
+
+        private void SendFinalAck()
+        {
+            // Encoder la trame pour le ACK
+            bTrame = new byte[4];
+            bTrame[0] = 0;
+            bTrame[1] = 4; // Ack
+            bTrame[2] = (byte)((bTamponReception[2] << 8) & 0xff00); // Numéro de block correspondant au bloc actuel
+            bTrame[3] = bTamponReception[3];
+
+            // Envoi de la trame au serveur
+            try
+            {
+                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointDistantDownload);
+            }
+            catch (Exception e)
+            {
+                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission du ACK ", e.Message) });
+                return;
+            }
         }
 
         private void ChangePort(string localEndPoint, string remoteEndPoint)

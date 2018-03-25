@@ -77,6 +77,7 @@ namespace Server.C_TFTP
                                 rrQ.SetPointDistant(DistantPoint);
                                 f.Invoke(f.ServerStatus, new object[] { string.Format("Transfert du fichier {0} vers {1}", fileName, DistantPoint.ToString()) });
                                 Thread threadRRQ = new Thread(new ThreadStart(rrQ.RRQThread));
+                                threadRRQ.IsBackground = true;
                                 threadRRQ.Start();
                                 break;
 
@@ -102,6 +103,7 @@ namespace Server.C_TFTP
                                 f.Invoke(f.ServerStatus, new object[] { string.Format("Transfert du fichier {0} venant de {1}", fileName, DistantPoint.ToString()) });
                                 Thread threadWRQ = new Thread(new ThreadStart(wrQ.WRQThread));
                                 threadWRQ.Start();
+                                threadWRQ.IsBackground = true;
                                 break;
                             case 0: // Ni RRQ, ni WRQ donc erreur
                                 // Operation TFTP illégale
