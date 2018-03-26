@@ -89,9 +89,6 @@ namespace Client.C_TFTPClient
                 return;
             }
 
-            // Même port pour le serveur que pour le client
-             //ChangePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
-
             f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
 
             // Transfert de blocks
@@ -132,7 +129,7 @@ namespace Client.C_TFTPClient
                 return;
             }
             // Fermer le socket et le fichier pour terminer le transfert
-            f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} envoyés à {1}", nBlock, pointDistantDownload.ToString()) });
+            f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} reçus de {1}", nBlock, pointDistantDownload.ToString()) });
             f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est terminé avec succès ! \r\n" });
             sDownload.Close();
             fs.Close();
@@ -181,11 +178,10 @@ namespace Client.C_TFTPClient
             bTrame[1] = 4;
             bTrame[2] = (byte)(nBlock >> 8);// Numéro de block correspondant au bloc actuel
             bTrame[3] = (byte)(nBlock % 256);
-
             // Envoi de la trame au serveur
             try
             {
-                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointDistantDownload);
+                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointLocalDownload);
             }
             catch(Exception e)
             {
@@ -206,7 +202,7 @@ namespace Client.C_TFTPClient
             // Envoi de la trame au serveur
             try
             {
-                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointDistantDownload);
+                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointLocalDownload);
             }
             catch (Exception e)
             {

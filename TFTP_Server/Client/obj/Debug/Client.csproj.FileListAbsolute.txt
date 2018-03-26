@@ -34,3 +34,12 @@ C:\Git Clones\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.csproj.Gen
 C:\Git Clones\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 C:\Git Clones\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.exe
 C:\Git Clones\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.pdb
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\bin\Debug\Client.exe
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\bin\Debug\Client.pdb
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.frmClient.resources
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.Properties.Resources.resources
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.csproj.GenerateResource.Cache
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.exe
+C:\Users\usager\Desktop\TFTP-Implementation\TFTP_Server\Client\obj\Debug\Client.pdb
