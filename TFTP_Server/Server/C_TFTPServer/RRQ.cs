@@ -85,8 +85,6 @@ namespace Server.C_TFTP
                         else
                         {
                             nTimeOut = 0;
-                           // Gestion des sockets bloquants
-                            sRRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
                             try
                             {
                                 nRead = sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);

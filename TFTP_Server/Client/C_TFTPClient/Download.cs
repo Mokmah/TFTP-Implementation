@@ -176,8 +176,9 @@ namespace Client.C_TFTPClient
         private void SendDataAck()
         {
             // Encoder la trame pour le ACK
+            bTrame = new byte[4];
             bTrame[0] = 0;
-            bTrame[1] = 1;
+            bTrame[1] = 4;
             bTrame[2] = (byte)(nBlock >> 8);// Numéro de block correspondant au bloc actuel
             bTrame[3] = (byte)(nBlock % 256);
 
