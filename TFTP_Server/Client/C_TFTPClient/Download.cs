@@ -92,7 +92,7 @@ namespace Client.C_TFTPClient
             f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
 
             // Transfert de blocks
-            do
+            while (bTamponReception[1] != 5 && bLen == 516)
             {
                 // On reçoit le block suivant
                 if ((((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)
@@ -121,7 +121,7 @@ namespace Client.C_TFTPClient
                     // On envoie un autre Ack si c'est le dernier block
                     SendFinalAck();
                 }
-            } while (bTamponReception[1] != 5 && bLen == 516);
+            }
                 // S'il y a une erreur, récupérer le type et l'afficher
                 if (bTamponReception[1] == 5)
             {
