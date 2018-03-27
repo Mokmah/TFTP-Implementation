@@ -91,9 +91,8 @@ namespace Client.C_TFTPClient
 
             f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
 
-            //pointLocalDownload = pointDistantDownload;
-            //ChangePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
-            
+            // Est-ce qu'il faut changer de port et interchanger le point local du point distant?
+
             // Transfert de blocks
             do
             {
@@ -109,7 +108,7 @@ namespace Client.C_TFTPClient
                 }
 
                 // On attend de voir si c'est le dernier block
-                if (bLen == 516)
+                else 
                 {
                     // Réception du prochain packet de données
                     try
@@ -123,8 +122,8 @@ namespace Client.C_TFTPClient
                     }
                     // On envoie un autre Ack si c'est le dernier block
                 }
-                SendFinalAck();
-            } while (bTamponReception[1] != 5 && bLen == 516) ;
+                SendDataAck();
+            } while (bTamponReception[1] != 5 && bLen == 516);
 
                 // S'il y a une erreur, récupérer le type et l'afficher
                 if (bTamponReception[1] == 5)
@@ -180,7 +179,7 @@ namespace Client.C_TFTPClient
             bTrame = new byte[4];
             bTrame[0] = 0;
             bTrame[1] = 4;
-            bTrame[2] = (byte)((nBlock & 0xff00) >> 8); // Numéro  de block correspondant au bloc actuel
+            bTrame[2] = (byte)(nBlock >> 8); // Numéro  de block correspondant au bloc actuel
             bTrame[3] = (byte)(nBlock % 256);
             // Envoi de la trame au serveur
             try
@@ -200,7 +199,7 @@ namespace Client.C_TFTPClient
             bTrame = new byte[4];
             bTrame[0] = 0;
             bTrame[1] = 4; // Ack
-            bTrame[2] = bTamponReception[2]; // Numéro de block correspondant au bloc actuel
+            bTrame[2] = (byte)((bTamponReception[2] << 8) & 0xff00); // Numéro de block correspondant au bloc actuel
             bTrame[3] = bTamponReception[3];
 
             // Envoi de la trame au serveur
