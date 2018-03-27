@@ -89,10 +89,9 @@ namespace Client.C_TFTPClient
                 return;
             }
 
-            // Même port pour le serveur que pour le client
-             //ChangePort(pointLocalDownload.ToString(), pointDistantDownload.ToString());
-
             f.Invoke(f.ServerStatus, new object[] { "Début du transfert..." });
+
+            // Est-ce qu'il faut changer de port et interchanger le point local du point distant?
 
             // Transfert de blocks
             do
@@ -109,7 +108,7 @@ namespace Client.C_TFTPClient
                 }
 
                 // On attend de voir si c'est le dernier block
-                if (bLen == 516)
+                else 
                 {
                     // Réception du prochain packet de données
                     try
@@ -122,9 +121,10 @@ namespace Client.C_TFTPClient
                         return;
                     }
                     // On envoie un autre Ack si c'est le dernier block
-                    SendFinalAck();
                 }
+                SendDataAck();
             } while (bTamponReception[1] != 5 && bLen == 516);
+
                 // S'il y a une erreur, récupérer le type et l'afficher
                 if (bTamponReception[1] == 5)
             {
@@ -132,7 +132,7 @@ namespace Client.C_TFTPClient
                 return;
             }
             // Fermer le socket et le fichier pour terminer le transfert
-            f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} envoyés à {1}", nBlock, pointDistantDownload.ToString()) });
+            f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} reçus de {1}", nBlock, pointDistantDownload.ToString()) });
             f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est terminé avec succès ! \r\n" });
             sDownload.Close();
             fs.Close();
@@ -179,9 +179,8 @@ namespace Client.C_TFTPClient
             bTrame = new byte[4];
             bTrame[0] = 0;
             bTrame[1] = 4;
-            bTrame[2] = (byte)(nBlock >> 8);// Numéro de block correspondant au bloc actuel
+            bTrame[2] = (byte)(nBlock >> 8); // Numéro  de block correspondant au bloc actuel
             bTrame[3] = (byte)(nBlock % 256);
-
             // Envoi de la trame au serveur
             try
             {
@@ -219,11 +218,11 @@ namespace Client.C_TFTPClient
         {
             // Prendre l'IP et le port du local
             string[] local;
-            local = localEndPoint.Split('.');
+            local = localEndPoint.Split(':');
             int Port = Int32.Parse(local[1]);
             //Prendre l'IP et le port du distant
             string[] distant;
-            distant = remoteEndPoint.Split('.');
+            distant = remoteEndPoint.Split(':');
             IPAddress IP = IPAddress.Parse(distant[0]);
             // Changement du point distant avec le port du point local
             pointDistantDownload = new IPEndPoint(IP, Port);
