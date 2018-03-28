@@ -82,7 +82,7 @@ namespace Server.C_TFTP
                         if (!(bRead = sRRQ.Poll(5000000, SelectMode.SelectRead)))
                         {
                             nTimeOut++;
-                            f.Invoke(f.ServerStatus, new object[] { "Attente du client, le pare feu est-il désactivé des deux côtés?" });
+                            f.Invoke(f.ServerStatus, new object[] { "Attente du client" });
                         }
                         else
                         {
@@ -93,7 +93,8 @@ namespace Server.C_TFTP
                             }
                             catch (SocketException se)
                             {
-                                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception, l'hôte distant a dû être fermé") });
+                                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la réception. Transfert annulé...") });
+                                fs.Close();
                                 return;
                             }
                             // Verification dans une erreur de transfert de bloc
