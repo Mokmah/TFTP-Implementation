@@ -38,6 +38,7 @@ namespace Client
             ServerStatus = new dSetText(UpdateStatus);
         }
 
+        #region Évènements du formulaire et instanciation des classes / threads
         // Évènement pour chercher un fichier dans un dialogue et retourner un string correspondant
         private void btnFileSearch_Click(object sender, EventArgs e)
         {
@@ -73,13 +74,16 @@ namespace Client
                 t.Start();
             }
         }
+        #endregion
 
+        // Méthode pour ajouter au formulaire le statut actuel du serveur
         public void UpdateStatus(string Status)
         {
             // Envoi du statut dans le textbox du formulaire
             txtStatus.Text += Status + "\r\n";
         }
 
+        #region Validation des entrées du formulaire
         private bool ValidateUploadBoxes()
         {
             if (txtServerIPAdress.Text == "")
@@ -119,5 +123,6 @@ namespace Client
             }
             return true;
         }
+        #endregion
     }
 }

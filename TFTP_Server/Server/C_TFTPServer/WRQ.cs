@@ -37,6 +37,7 @@ namespace Server.C_TFTP
         string fileWRQ;
         FileStream fs;
 
+        #region Méthodes pour obtenir le point distant et le fichier visé
         public void SetPointDistant(EndPoint PointDistant)
         {
             PointDistantWRQ = PointDistant;
@@ -46,7 +47,9 @@ namespace Server.C_TFTP
         {
             fileWRQ = "C:\\TFTP\\" + fileName;
         }
+        #endregion
 
+        #region Thread pour traiter le demandes d'écritures de client à serveur
         public void WRQThread()
         {
             // Définition des variables pour le thread
@@ -130,6 +133,7 @@ namespace Server.C_TFTP
                 f.Invoke(f.ServerStatus, new object[] { errorMsg });
             }
         }
+        #endregion
 
         // Méthode d'envoi de ACK au client
         private void SendAck(byte[] bTrame)

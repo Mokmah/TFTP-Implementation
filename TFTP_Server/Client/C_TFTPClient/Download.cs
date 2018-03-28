@@ -42,6 +42,8 @@ namespace Client.C_TFTPClient
         string lFileDownload, rFileDownload;
         FileStream fs;
 
+
+        #region Méthodes pour obtenir le point distant et le fichier visé
         public void SetPointDistant(IPAddress IP)
         {
             pointDistantDownload = new IPEndPoint(IP, 69);
@@ -54,7 +56,9 @@ namespace Client.C_TFTPClient
             lFileDownload = "C:\\TFTP\\" + local;
             rFileDownload = remote;
         }
+        #endregion
 
+        #region Thread de téléchargement de fichiers
         public void DownloadFile()
         {
             // Définition des variables pour la méthode Download
@@ -141,6 +145,7 @@ namespace Client.C_TFTPClient
             fs.Close();
 
         }
+        #endregion
 
         #region Méthodes pour communiquer avec le serveur
         private void InitDownloadEncoding()

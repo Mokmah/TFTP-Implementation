@@ -43,6 +43,9 @@ namespace Server
             //Instancier l'objet t pour démarrer le thread «ListenThread» de la classe ListenServer
             t = new Thread(new ThreadStart(server.ListenThread));
 
+            // Fermeture du thread quand on ferme le programme
+            t.IsBackground = true;
+
             //Démarrer la thread
             t.Start();
 

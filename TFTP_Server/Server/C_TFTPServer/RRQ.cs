@@ -34,7 +34,7 @@ namespace Server.C_TFTP
         string fileRRQ;
         FileStream fs;
 
-
+        #region Méthodes pour obtenir le point distant et le fichier visé
         public void SetPointDistant(EndPoint PointDistant)
         {
             PointDistantRRQ = PointDistant;
@@ -44,7 +44,9 @@ namespace Server.C_TFTP
         {
             fileRRQ = "C:\\TFTP\\" + fileName;
         }
+        #endregion
 
+        #region Thread qui traitera les demandes de lecture client serveur
         public void RRQThread()
         {
             // Description des variables du thread
@@ -126,6 +128,7 @@ namespace Server.C_TFTP
                 f.Invoke(f.ServerStatus, new object[] { errorMsg });
             }
         }
+        #endregion 
     }
 }
    

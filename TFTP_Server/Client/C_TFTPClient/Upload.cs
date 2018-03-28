@@ -39,6 +39,7 @@ namespace Client.C_TFTPClient
         string lFileUpload, rFileUpload;
         FileStream fs;
 
+        #region Méthodes pour obtenir le point distant et le fichier visé
         public void SetPointDistant(IPAddress IP)
         {
             PointDistantUpload = new IPEndPoint(IP, 69);
@@ -51,7 +52,9 @@ namespace Client.C_TFTPClient
             lFileUpload = local;
             rFileUpload = remote;
         }
+        #endregion
 
+        #region Thread de téléversement de fichiers
         public void UploadFile()
         {
             // Définition des variables du thread
@@ -125,6 +128,8 @@ namespace Client.C_TFTPClient
             fs.Close();
             sUpload.Close();
         }
+        #endregion
+
         #region Méthodes pour intéragir avec le serveur
         // Méthode pour envoyer une trame au serveur au début du transfert
         private void sendToServer()
