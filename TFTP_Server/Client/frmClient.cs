@@ -31,8 +31,8 @@ namespace Client
         {
             InitializeComponent();
             UpdateStatus("Bienvenue dans le client de transfert de fichiers TFTP !\r\n");
-            txtServerIPAdress.Text = "192.168.1.117";
-            txtDownloadIP.Text = "192.168.1.117";
+            txtServerIPAdress.Text = "127.0.0.1";
+            txtDownloadIP.Text = "127.0.0.1";
 
             // Instantiation de la méthode déléguée en y associant sa méthode cible.
             ServerStatus = new dSetText(UpdateStatus);
