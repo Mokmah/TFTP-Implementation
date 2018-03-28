@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Client.C_TFTPClient
 {
@@ -82,6 +83,7 @@ namespace Client.C_TFTPClient
             try
             {
                 bLen = sDownload.ReceiveFrom(bTamponReception, ref pointDistantDownload);
+                
             }
             catch(Exception se)
             {
@@ -94,7 +96,7 @@ namespace Client.C_TFTPClient
             // Est-ce qu'il faut changer de port et interchanger le point local du point distant?
 
             // Transfert de blocks
-            do
+            while (bTamponReception[1] != 5 && bLen == 516) 
             {
                 // On reçoit le block suivant
                 if ((((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)
@@ -122,8 +124,7 @@ namespace Client.C_TFTPClient
                     }
                     // On envoie un autre Ack si c'est le dernier block
                 }
-               // SendDataAck();
-            } while (bTamponReception[1] != 5 && bLen == 516);
+            }
 
                 // S'il y a une erreur, récupérer le type et l'afficher
                 if (bTamponReception[1] == 5)
@@ -131,6 +132,8 @@ namespace Client.C_TFTPClient
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors du transfert {0}", Encoding.GetEncoding(437).GetString(bTamponReception, 4, bTamponReception.Length - 5).Trim('\0')) });
                 return;
             }
+            // Envoi du dernier ACK pour terminer le transfert
+            SendDataAck();
             // Fermer le socket et le fichier pour terminer le transfert
             f.Invoke(f.ServerStatus, new object[] { string.Format("Total de blocs transférés : {0} reçus de {1}", nBlock, pointDistantDownload.ToString()) });
             f.Invoke(f.ServerStatus, new object[] { "Le transfert s'est terminé avec succès ! \r\n" });
@@ -191,41 +194,6 @@ namespace Client.C_TFTPClient
                 f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission du ACK ", e.Message) });
                 return;
             }
-        }
-
-        private void SendFinalAck()
-        {
-            // Encoder la trame pour le ACK
-            bTrame = new byte[4];
-            bTrame[0] = 0;
-            bTrame[1] = 4; // Ack
-            bTrame[2] = (byte)((bTamponReception[2] << 8) & 0xff00); // Numéro de block correspondant au bloc actuel
-            bTrame[3] = bTamponReception[3];
-
-            // Envoi de la trame au serveur
-            try
-            {
-                sDownload.SendTo(bTrame, bTrame.Length, SocketFlags.None, pointDistantDownload);
-            }
-            catch (Exception e)
-            {
-                f.Invoke(f.ServerStatus, new object[] { string.Format("Il y a eu une erreur lors de la transmission du ACK ", e.Message) });
-                return;
-            }
-        }
-
-        private void ChangePort(string localEndPoint, string remoteEndPoint)
-        {
-            // Prendre l'IP et le port du local
-            string[] local;
-            local = localEndPoint.Split(':');
-            int Port = Int32.Parse(local[1]);
-            //Prendre l'IP et le port du distant
-            string[] distant;
-            distant = remoteEndPoint.Split(':');
-            IPAddress IP = IPAddress.Parse(distant[0]);
-            // Changement du point distant avec le port du point local
-            pointDistantDownload = new IPEndPoint(IP, Port);
         }
         #endregion
     }
