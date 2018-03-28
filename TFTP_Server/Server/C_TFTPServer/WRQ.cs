@@ -80,7 +80,7 @@ namespace Server.C_TFTP
                     {
                         nTimeOut = 0;
                         // Recevoir les informations des blocs
-                        sWRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                        sWRQ.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 15000);
                         try // Recevoir les informations des blocs
                         {
                             nRead = sWRQ.ReceiveFrom(bTamponReception, ref PointDistantWRQ);

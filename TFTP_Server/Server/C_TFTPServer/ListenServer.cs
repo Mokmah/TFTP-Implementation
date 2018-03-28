@@ -55,7 +55,6 @@ namespace Server.C_TFTP
                         {
                             case 1: // Read request
                                 f.Invoke(f.ServerStatus, new object[] {"Une demande de lecture a été créée"});
-                                Thread.Sleep(50);
                                 fileName = null;
                                 // Savoir le fichier a transporter
                                 for (int i = 2; bTamponReception[i] != 0; i++)

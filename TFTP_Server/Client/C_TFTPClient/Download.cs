@@ -81,7 +81,7 @@ namespace Client.C_TFTPClient
             // Réception de l'accord pour download
             try
             {
-                bLen = sDownload.ReceiveFrom(bTamponReception, ref pointLocalDownload);
+                bLen = sDownload.ReceiveFrom(bTamponReception, ref pointDistantDownload);
             }
             catch(Exception se)
             {
@@ -108,12 +108,12 @@ namespace Client.C_TFTPClient
                 }
 
                 // On attend de voir si c'est le dernier block
-                else 
+                if (bLen == 516) 
                 {
                     // Réception du prochain packet de données
                     try
                     {
-                        bLen = sDownload.ReceiveFrom(bTamponReception, ref pointLocalDownload);
+                        bLen = sDownload.ReceiveFrom(bTamponReception, ref pointDistantDownload);
                     }
                     catch (Exception e)
                     {
@@ -122,7 +122,7 @@ namespace Client.C_TFTPClient
                     }
                     // On envoie un autre Ack si c'est le dernier block
                 }
-                SendDataAck();
+               // SendDataAck();
             } while (bTamponReception[1] != 5 && bLen == 516);
 
                 // S'il y a une erreur, récupérer le type et l'afficher

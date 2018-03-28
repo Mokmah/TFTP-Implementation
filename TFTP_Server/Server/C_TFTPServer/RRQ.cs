@@ -87,7 +87,7 @@ namespace Server.C_TFTP
                             nTimeOut = 0;
                             try
                             {
-                                nRead = sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
+                                sRRQ.ReceiveFrom(bTamponReception, ref PointDistantRRQ);
                             }
                             catch (SocketException se)
                             {
