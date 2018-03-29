@@ -100,7 +100,7 @@ namespace Client.C_TFTPClient
             // Est-ce qu'il faut changer de port et interchanger le point local du point distant?
 
             // Transfert de blocks
-            while (bTamponReception[1] != 5 && bLen == 516) 
+            do
             {
                 // On reçoit le block suivant
                 if ((((bTamponReception[2] << 8) & 0xff00) | bTamponReception[3]) == nBlock)
@@ -144,7 +144,7 @@ namespace Client.C_TFTPClient
             sDownload.Close();
             fs.Close();
 
-        }
+        } while (bTamponReception[1] != 5 && bLen == 516);
         #endregion
 
         #region Méthodes pour communiquer avec le serveur
