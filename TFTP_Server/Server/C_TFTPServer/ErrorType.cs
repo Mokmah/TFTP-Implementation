@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Sockets;
 
 namespace Server.C_TFTP
@@ -22,9 +22,9 @@ namespace Server.C_TFTP
             Trame[3] = (byte)code;
 
             // Choix du message selon le type de problème
-            for (indice = 4; indice < MessageErreur.Length; indice++)
+            for (indice = 0; indice < MessageErreur.Length; indice++)
             {
-                Trame[indice] = (byte)MessageErreur[iMessage];
+                Trame[indice + 4] = (byte)MessageErreur[iMessage];
                 iMessage++;
             }
             // Envoi du type d'erreur au serveur / client
